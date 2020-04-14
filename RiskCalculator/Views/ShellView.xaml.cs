@@ -22,22 +22,21 @@ namespace RiskCalculator.Views
         public ShellView()
         {
             InitializeComponent();
-
             
         }
 
         private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-            //int index = MenuItems.SelectedIndex;
-            //UpdateCursor(index);
+
+            int index = MenuItems.SelectedIndex;
+            UpdateCursor(index);
         }
 
         private void UpdateCursor(int index)
         {
             TrainsitionigContentSlide.OnApplyTemplate();
 
-            GridCursor.Margin = new Thickness(0, (100 + (63 * index)), 0, 0);
+            GridCursor.Margin = new Thickness(0, (100 + (60 * index)), 0, 0);
         }
     }
 }

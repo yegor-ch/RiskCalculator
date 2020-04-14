@@ -17,24 +17,12 @@ namespace RiskCalculator.ViewModels
         public string Kind { get; set; }
 
         public object ViewModel { get; set; }
-
-        public BindableCollection<SubItem> SubItems { get; set; }
-    }
-
-    class SubItem
-    {
-        public string Title { get; set; }
-        public object ViewModel { get; set; }
     }
 
     class ShellViewModel : Conductor<object>
     {
         public ShellViewModel()
         {
-            SubMenuItems.Add(new SubItem() { Title = "Сканувати систему" });
-            SubMenuItems.Add(new SubItem() { Title = "Додати СVE з NVD" });
-
-
             // Initialaze menu items.
             MenuItems.Add(new MenuItem
             {
@@ -42,7 +30,6 @@ namespace RiskCalculator.ViewModels
                 Title = "Головна",
                 Kind = "Home",
                 ViewModel = new HomePageViewModel(),
-                SubItems = SubMenuItems
             });
 
             MenuItems.Add(new MenuItem { Index = 1, Title = "Список вразливостей", Kind = "ViewList" });
@@ -53,23 +40,8 @@ namespace RiskCalculator.ViewModels
         }
 
         private MenuItem _selectedMenuItem;
-        private SubItem _selectedSubMenuItem;
 
         public BindableCollection<MenuItem> _menuItems = new BindableCollection<MenuItem>();
-        public BindableCollection<SubItem> _subMenuItems = new BindableCollection<SubItem>();
-
-
-        public BindableCollection<SubItem> SubMenuItems
-        {
-            get
-            {
-                return _subMenuItems;
-            }
-            set
-            {
-                _subMenuItems = value;
-            }
-        }
 
         public BindableCollection<MenuItem> MenuItems
         {
@@ -91,19 +63,7 @@ namespace RiskCalculator.ViewModels
                 _selectedMenuItem = value;
                 NotifyOfPropertyChange(() => SelectedMunuItem);
 
-                if(value != null && SelectedMunuItem.ViewModel != null)
-                    SwithToView(SelectedMunuItem.ViewModel);
-            }
-        }
-        public SubItem SelectedSubMenuItem
-        {
-            get { return _selectedSubMenuItem; }
-            set
-            {
-                _selectedSubMenuItem = value;
-                NotifyOfPropertyChange(() => SelectedSubMenuItem);
-
-                if (value != null && SelectedMunuItem.ViewModel != null)
+                if(SelectedMunuItem.ViewModel != null)
                     SwithToView(SelectedMunuItem.ViewModel);
             }
         }
