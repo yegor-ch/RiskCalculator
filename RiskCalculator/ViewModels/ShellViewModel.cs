@@ -12,7 +12,6 @@ namespace RiskCalculator.ViewModels
 {
     class MenuItem
     {
-        public int Index { get; set; }
         public string Title { get; set; }
         public string Kind { get; set; }
 
@@ -26,17 +25,18 @@ namespace RiskCalculator.ViewModels
             // Initialaze menu items.
             MenuItems.Add(new MenuItem
             {
-                Index = 0,
                 Title = "Головна",
                 Kind = "Home",
                 ViewModel = new HomePageViewModel(),
             });
 
-            MenuItems.Add(new MenuItem { Index = 1, Title = "Список вразливостей", Kind = "ViewList" });
-            MenuItems.Add(new MenuItem { Index = 2, Title = "CVSS калькулятор", Kind = "Calculator" });
-            MenuItems.Add(new MenuItem { Index = 3, Title = "Метрики", Kind = "ChartBar" });
-            MenuItems.Add(new MenuItem { Index = 4, Title = "Оцінювання ризиків", Kind = "Security" });
-            MenuItems.Add(new MenuItem { Index = 5, Title = "Результати оцінки", Kind = "Newspaper" });
+            MenuItems.Add(new MenuItem { Title = "Сканування системи", Kind = "ShieldSearch" });
+            MenuItems.Add(new MenuItem { Title = "Додати СVE", Kind = "AddCircle" });
+            MenuItems.Add(new MenuItem { Title = "Список вразливостей", Kind = "ViewList" });
+            MenuItems.Add(new MenuItem { Title = "CVSS калькулятор", Kind = "Calculator" });
+            MenuItems.Add(new MenuItem { Title = "Метрики", Kind = "ChartBar" });
+            MenuItems.Add(new MenuItem { Title = "Оцінювання ризиків", Kind = "Security" });
+            MenuItems.Add(new MenuItem { Title = "Результати оцінки", Kind = "Newspaper" });
         }
 
         private MenuItem _selectedMenuItem;

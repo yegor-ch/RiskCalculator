@@ -19,7 +19,7 @@
             <!--2980b9 FF0069C0-->
         </Grid>
         <Grid Margin="0 12">
-            <TextBlock Text="Risck Calculator" VerticalAlignment="Top" FontFamily="Champagne &amp; Limousines" FontSize="16" Foreground="Gray" Margin="560 0 0 0"/>
+            <TextBlock Text="РИЗИК КАЛЬКУЛЯТОР" VerticalAlignment="Top" FontFamily="Champagne &amp; Limousines" FontSize="16" Foreground="Gray" Margin="560 0 0 0"/>
             <Button x:Name="CloseProgram" Height="25" Width="25" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="0" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Gray" RenderTransformOrigin="2.52,0.6" Margin="3 0">
                 <materialDesign:PackIcon Kind="WindowClose" Width="20" Height="20"/>
@@ -39,7 +39,7 @@
             </materialDesign:TransitioningContent>
         
             <!--Menu-->
-            <ListView x:Name="MenuItems" SelectedItem="{Binding Path=SelectedMunuItem, Mode=OneWayToSource}" Margin="0 100" Foreground="LightGray" FontFamily="Champagne &amp; Limousines" FontSize="16" SelectedIndex="0"
+            <ListView x:Name="MenuItems" SelectedItem="{Binding Path=SelectedMunuItem, Mode=OneWayToSource}" Margin="0 100 0 20" Foreground="LightGray" FontFamily="Champagne &amp; Limousines" FontSize="16" SelectedIndex="0"
                       SelectionChanged="ListViewMenu_SelectionChanged">
                 <!--Some styles-->
                 <ListView.ItemContainerStyle>
