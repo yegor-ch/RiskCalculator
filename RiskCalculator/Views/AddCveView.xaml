@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="RiskCalculator.Views.AddCveView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:RiskCalculator.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="560" d:DesignWidth="800"
+             FontFamily="Champagne &amp; Limousines">
+
+    <UserControl.Resources>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid>
+            <!--Grid definition-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="240"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="116"/>
+                <RowDefinition Height="72"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!--SEARCH PANEL-->
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="20 10">
+                <TextBlock Text="Пошук СVE в NVD" FontSize="20" Foreground="Gray"/>
+                <TextBox Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Margin="0 15" VerticalAlignment="Top" Height="35" AcceptsReturn="True"
+                    materialDesign:HintAssist.Hint="Keyword" />
+            </StackPanel>
+
+            <!--Buttons-->
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                <Button Height="35"  Width="100" Style="{StaticResource MaterialDesignOutlinedButton}" 
+                   Content="Пошук" ToolTip="MaterialDesignOutlinedButton" Margin="15,50,0,0" VerticalAlignment="Top" />
+                <Button Height="35"  Width="100" Style="{StaticResource MaterialDesignOutlinedButton}" 
+                   Content="Очистити" ToolTip="MaterialDesignOutlinedButton" Margin="15,50,0,0" VerticalAlignment="Top" Foreground="#707070" BorderBrush="#707070"  />
+            </StackPanel>
+
+            <!--Toogle buttons-->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Шукати за період:" FontSize="18" Foreground="Gray" Margin="20 0"/>
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="20 0">
+                <RadioButton Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="За весь час" IsChecked="True"/>
+                <RadioButton Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="3 місяці" Margin="30 0" />
+                <RadioButton Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="3 роки" />
+            </StackPanel>
+
+            <!--SEARCH RESULT SECTION-->
+            <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="20 0">
+                <TextBlock  Text="Результати пошуку:" Foreground="Gray" FontSize="18"/>
+                <ListView x:Name="SearchResult" Margin="0 30 0 0">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="False">
+                            <GridViewColumn DisplayMemberBinding="{Binding Code}" Header="Vuln ID" Width="160"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Загальна інформація" Width="360">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock x:Name="Summmary" TextWrapping="Wrap"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="CVSS оцінка" Width="160"/>
+                            <GridViewColumn Header="Додати" Width="120">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="False" Style="{StaticResource MaterialDesignAccentCheckBox}" Content="Додано" BorderBrush="#aeea00" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            
+
+        </Grid>
+    </Grid>
+</UserControl>

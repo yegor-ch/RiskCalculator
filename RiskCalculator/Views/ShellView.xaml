@@ -9,8 +9,8 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         
-        mc:Ignorable="d" Height="700" Width="1000" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
-        
+        mc:Ignorable="d" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
+        FontFamily="Champagne &amp; Limousines"
         >
     <Grid Background="#fff" cal:Message.Attach="[Event MouseDown] = [Action MouseDrag()]">
 
@@ -19,7 +19,7 @@
             <!--2980b9 FF0069C0-->
         </Grid>
         <Grid Margin="0 12">
-            <TextBlock Text="РИЗИК КАЛЬКУЛЯТОР" VerticalAlignment="Top" FontFamily="Champagne &amp; Limousines" FontSize="16" Foreground="Gray" Margin="560 0 0 0"/>
+            <TextBlock Text="РИЗИК КАЛЬКУЛЯТОР" VerticalAlignment="Top" FontFamily="Champagne &amp; Limousines" FontSize="16" Foreground="Gray" Margin="600 0 0 0"/>
             <Button x:Name="CloseProgram" Height="25" Width="25" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="0" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Gray" RenderTransformOrigin="2.52,0.6" Margin="3 0">
                 <materialDesign:PackIcon Kind="WindowClose" Width="20" Height="20"/>
@@ -27,7 +27,7 @@
         </Grid>
         
         <!--ACTIVE PAGE SECTION-->      
-        <Grid Margin="305,0,0,0" Height="560" VerticalAlignment="Center">
+        <Grid Margin="320,0,0,0" Height="560" VerticalAlignment="Center">
             <ContentControl x:Name="ActiveItem" />
         </Grid>
         

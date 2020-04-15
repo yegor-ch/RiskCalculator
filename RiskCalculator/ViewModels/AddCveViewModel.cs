@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RiskCalculator.Models
+namespace RiskCalculator.ViewModels
 {
-    interface IViewModel
+    class AddCveViewModel : Screen
     {
     }
 }
