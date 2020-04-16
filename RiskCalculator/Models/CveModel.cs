@@ -76,7 +76,7 @@ namespace RiskCalculator.Models
         public string confidentialityImpact { get; set; }
         public string integrityImpact { get; set; }
         public string availabilityImpact { get; set; }
-        public float baseScore { get; set; }
+        public double baseScore { get; set; }
     }
 
     public class BaseMetricV3

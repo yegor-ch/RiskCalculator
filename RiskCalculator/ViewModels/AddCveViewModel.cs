@@ -10,12 +10,11 @@ namespace RiskCalculator.ViewModels
 {
     class AddCveViewModel : Screen
     {
-        public BindableCollection<CveModel> SearchResult { get; set; }
+        public BindableCollection<VulnerabilityModel> SearchResult { get; set; }
 
         public AddCveViewModel()
         {
-            SearchResult = new BindableCollection<CveModel>();
-            
+            SearchResult = new BindableCollection<VulnerabilityModel>();
         }
     }
 }
