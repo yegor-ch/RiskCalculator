@@ -10,8 +10,11 @@
              FontFamily="Champagne &amp; Limousines">
 
     <UserControl.Resources>
-
+        <!--<Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>-->
     </UserControl.Resources>
+    
     <Grid>
         <Grid>
             <!--Grid definition-->
@@ -55,19 +58,19 @@
                 <ListView x:Name="SearchResult" Margin="0 30 0 0">
                     <ListView.View>
                         <GridView AllowsColumnReorder="False">
-                            <GridViewColumn DisplayMemberBinding="{Binding Code}" Header="Vuln ID" Width="160"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Загальна інформація" Width="360">
+                            <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Vuln ID" Width="160"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Summary}" Header="Загальна інформація" Width="360" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock x:Name="Summmary" TextWrapping="Wrap"></TextBlock>
+                                        <TextBlock TextWrapping="Wrap" Height="40"></TextBlock>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="CVSS оцінка" Width="160"/>
-                            <GridViewColumn Header="Додати" Width="120">
+                            <GridViewColumn DisplayMemberBinding="{Binding Severity}" Header="CVSS оцінка" Width="160" />
+                            <GridViewColumn Width="120" Header="Додати">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="False" Style="{StaticResource MaterialDesignAccentCheckBox}" Content="Додано" BorderBrush="#aeea00" />
+                                        <CheckBox IsChecked="False" Style="{StaticResource MaterialDesignAccentCheckBox}"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

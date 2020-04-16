@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RiskCalculator.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,12 @@ namespace RiskCalculator.ViewModels
 {
     class AddCveViewModel : Screen
     {
+        public BindableCollection<CveModel> SearchResult { get; set; }
+
+        public AddCveViewModel()
+        {
+            SearchResult = new BindableCollection<CveModel>();
+            
+        }
     }
 }

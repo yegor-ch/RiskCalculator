@@ -23,15 +23,12 @@ namespace RiskCalculator.ViewModels
         public ShellViewModel()
         {
             // Initialaze menu items.
-            MenuItems.Add(new MenuItem
-            {
-                Title = "Головна",
-                Kind = "Home",
-                ViewModel = new HomePageViewModel(),
-            });
+
+            MenuItems.Add(new MenuItem { Title = "Додати СVE", Kind = "AddCircle", ViewModel = new AddCveViewModel() });
+            MenuItems.Add(new MenuItem { Title = "Головна", Kind = "Home", ViewModel = new HomePageViewModel() });
 
             MenuItems.Add(new MenuItem { Title = "Сканування системи", Kind = "ShieldSearch" });
-            MenuItems.Add(new MenuItem { Title = "Додати СVE", Kind = "AddCircle", ViewModel = new AddCveViewModel() });
+            
             MenuItems.Add(new MenuItem { Title = "Список вразливостей", Kind = "ViewList" });
             MenuItems.Add(new MenuItem { Title = "CVSS калькулятор", Kind = "Calculator" });
             MenuItems.Add(new MenuItem { Title = "Метрики", Kind = "ChartBar" });
