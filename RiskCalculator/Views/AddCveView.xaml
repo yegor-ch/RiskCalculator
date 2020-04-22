@@ -89,7 +89,7 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn DisplayMemberBinding="{Binding Severity}" Header="CVSS оцінка" Width="160" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Severity}" Header="CVSS рівень" Width="160" />
                             <GridViewColumn Width="auto" Header="Додати">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>

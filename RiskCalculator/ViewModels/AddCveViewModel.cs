@@ -115,12 +115,44 @@ namespace RiskCalculator.ViewModels
             SearchResultList.Clear();
 
             foreach (var item in cve.Result.CVE_Items)
-            {
+            {              
+                string severity = "";
+
+                if (item.Impact != null)
+                {
+                    if (item.Impact.baseMetricV2 != null)
+                    {
+                        severity += $"V2: {item.Impact.baseMetricV2.cvssV2.baseScore} {item.Impact.baseMetricV2.severity}";
+                    }
+                    else
+                    {
+                        severity += "V2: none";
+                    }
+
+                    severity += Environment.NewLine;
+
+                    if (item.Impact.baseMetricV3 != null)
+                    {
+                        if(item.Impact.baseMetricV3.cvssV3 != null)
+                        {                            
+                            severity += $"V3.1: {item.Impact.baseMetricV3.cvssV3.baseScore} {item.Impact.baseMetricV3.cvssV3.baseSeverity}";
+                        }                    
+                    }
+                    else
+                    {
+                        severity += "V3.1: none";
+                    }
+                }
+                else
+                {
+                    severity += "none";
+                }
+
                 SearchResultList.Add(new VulnerabilityModel
                 {
                     Id = item.Cve.Meta.Id,
                     Description = item.Cve.Description.description_data[0].Value,
-                    //Severity = item.Impact.baseMetricV3.cvssV3.baseSeverity                  
+                    Severity = severity
                 });
             }
         }
