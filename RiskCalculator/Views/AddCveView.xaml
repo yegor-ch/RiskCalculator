@@ -4,15 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
              xmlns:local="clr-namespace:RiskCalculator.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="560" d:DesignWidth="800"
+             d:DesignHeight="660" d:DesignWidth="800"
              FontFamily="Champagne &amp; Limousines">
 
     <UserControl.Resources>
-        <!--<Style TargetType="ListViewItem">
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-        </Style>-->
+        <Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionAccentToggleButton}">
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="#79b700"/>
+                </Trigger> 
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     
     <Grid>
@@ -26,21 +32,31 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="116"/>
                 <RowDefinition Height="72"/>
+                <RowDefinition Height="420"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
             <!--SEARCH PANEL-->
             <StackPanel Grid.Row="0" Grid.Column="0" Margin="20 10">
                 <TextBlock Text="Пошук СVE в NVD" FontSize="20" Foreground="Gray"/>
-                <TextBox Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Margin="0 15" VerticalAlignment="Top" Height="35" AcceptsReturn="True"
-                    materialDesign:HintAssist.Hint="Keyword" />
+                <TextBox x:Name="SearchParams" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Margin="0 15" VerticalAlignment="Top" Height="40" AcceptsReturn="True"
+                    materialDesign:HintAssist.Hint="Keyword" ToolTip="Введіть дані для пошуку" materialDesign:ValidationAssist.UsePopup="True">
+                    <TextBox.Text>
+                        <Binding Path="SearchParams">
+                            <Binding.ValidationRules>
+                                <ExceptionValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </StackPanel>
 
             <!--Buttons-->
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                <Button Height="35"  Width="100" Style="{StaticResource MaterialDesignOutlinedButton}" 
-                   Content="Пошук" ToolTip="MaterialDesignOutlinedButton" Margin="15,50,0,0" VerticalAlignment="Top" />
-                <Button Height="35"  Width="100" Style="{StaticResource MaterialDesignOutlinedButton}" 
+                <Button x:Name="SearchRequest" Height="35"  Width="100" Style="{StaticResource MaterialDesignOutlinedButton}" 
+                   Content="Пошук" ToolTip="MaterialDesignOutlinedButton" Margin="15,50,0,0" VerticalAlignment="Top">
+                </Button>
+                <Button x:Name="ClearSearchParams" Height="35"  Width="100" Style="{StaticResource MaterialDesignOutlinedButton}" 
                    Content="Очистити" ToolTip="MaterialDesignOutlinedButton" Margin="15,50,0,0" VerticalAlignment="Top" Foreground="#707070" BorderBrush="#707070"  />
             </StackPanel>
 
@@ -51,15 +67,22 @@
                 <RadioButton Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="3 місяці" Margin="30 0" />
                 <RadioButton Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="3 роки" />
             </StackPanel>
-
+            <!--cal:Message.Attach="[Event SelectionChanged] = [Action NewVulnerabilityAdded($e)]"-->
             <!--SEARCH RESULT SECTION-->
             <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="20 0">
                 <TextBlock  Text="Результати пошуку:" Foreground="Gray" FontSize="18"/>
-                <ListView x:Name="SearchResult" Margin="0 30 0 0">
+                <ListView x:Name="SearchResultList" Margin="0 30 0 0" SelectionMode="Multiple">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <cal:ActionMessage MethodName="NewVulnerabilityAdded">
+                                <cal:Parameter Value="$eventArgs"/>
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ListView.View>
                         <GridView AllowsColumnReorder="False">
                             <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Vuln ID" Width="160"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding Summary}" Header="Загальна інформація" Width="360" >
+                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Загальна інформація" Width="360" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock TextWrapping="Wrap" Height="40"></TextBlock>
@@ -70,16 +93,29 @@
                             <GridViewColumn Width="120" Header="Додати">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="False" Style="{StaticResource MaterialDesignAccentCheckBox}"/>
+                                        <ToggleButton Content="X" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" ToolTip="Додати до списку" 
+                                                      />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
+                    
                 </ListView>
             </Grid>
             
+            <!--Progress Bar-->
+            <ProgressBar Grid.Row="3" Grid.ColumnSpan="3" Height="40" Width="40"  Style="{StaticResource MaterialDesignCircularProgressBar}" 
+                         x:Name="ProgressValue" Value="{Binding Path=ProgressValue}" IsIndeterminate="{Binding Path=IsIndeterminate}" Maximum="{Binding Path=Maximum}" Minimum="0" />
 
+
+            <!--Value="{Binding Path=ProgressValue}"-->
+            <!--<ProgressBar x:Name="ProgressValue" Value="{Binding Path=ProgressValue}" IsIndeterminate="{Binding Path=IsIndeterminate}" Grid.Row="3" Grid.ColumnSpan="3" Height="7" 
+                         Maximum="{Binding Path=Maximum}" Minimum="0" Margin="0 20 0 0" />-->
+
+            <materialDesign:Snackbar IsActive="{Binding IsActive}" Grid.ColumnSpan="3" Grid.Row="4">
+                <materialDesign:SnackbarMessage Content="{Binding AddedVulCount}" />
+            </materialDesign:Snackbar>
         </Grid>
     </Grid>
 </UserControl>
