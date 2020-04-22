@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using MaterialDesignThemes.Wpf;
 using RiskCalculator.API;
 using RiskCalculator.Models;
 using System;
@@ -48,8 +49,9 @@ namespace RiskCalculator.ViewModels
             }
         }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
         public string AddedVulCount { get; set; }
+        public SnackbarMessageQueue MessageQueue { get; set; }
 
         private VulnerabilityModel _selectedVulnerability;
         public VulnerabilityModel SelectedVulnerability
@@ -70,6 +72,9 @@ namespace RiskCalculator.ViewModels
             SearchResultList = new BindableCollection<VulnerabilityModel>();
             SelectedVulnerabilities = new BindableCollection<VulnerabilityModel>();
 
+            // Создаем свой кастомный экземпляр SnackbarMessageQueue и устанавливаем задержку, сколько будет видно Snackbar.
+            MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(1));
+  
             Maximum = 20;
            
             ApiHelper.InitializeClient();
@@ -79,7 +84,7 @@ namespace RiskCalculator.ViewModels
         public async void SearchRequest()
         {
             Thread thread = new Thread(GetCveData);
-            thread.Start();          
+            thread.Start();
         }
 
         private async void GetCveData()
@@ -120,17 +125,33 @@ namespace RiskCalculator.ViewModels
             }
         }
 
+        /// <summary>
+        /// Метод-обработчик события изменения выделенного ListItem в ListView.
+        /// </summary>
+        /// <param name="e"></param>
         public void NewVulnerabilityAdded(SelectionChangedEventArgs e)
         {
+            // Сообщение которое будет выводиться в Snackbar.
+            string message = "";
+
             foreach (var v in e.AddedItems)
             {
                 SelectedVulnerabilities.Add(v as VulnerabilityModel);
+
+                message += $"{(v as VulnerabilityModel).Id} додано до списку.";
             }
 
             foreach (var v in e.RemovedItems)
             {
                 SelectedVulnerabilities.Remove(v as VulnerabilityModel);
+
+                message += $"{(v as VulnerabilityModel).Id} видалено зі списку.";
             }
+
+            message += Environment.NewLine;
+            message += $"Всього додано вразливостей: {SelectedVulnerabilities.Count}";
+
+            MessageQueue.Enqueue(message);
 
         }
 

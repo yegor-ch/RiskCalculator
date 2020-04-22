@@ -81,20 +81,20 @@
                     </i:Interaction.Triggers>
                     <ListView.View>
                         <GridView AllowsColumnReorder="False">
-                            <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Vuln ID" Width="160"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Загальна інформація" Width="360" >
+                            <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Vuln ID" Width="115"/>
+                            <GridViewColumn Header="Загальна інформація" Width="440" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock TextWrapping="Wrap" Height="40"></TextBlock>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding Description}"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn DisplayMemberBinding="{Binding Severity}" Header="CVSS оцінка" Width="160" />
-                            <GridViewColumn Width="120" Header="Додати">
+                            <GridViewColumn Width="auto" Header="Додати">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <ToggleButton Content="X" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" ToolTip="Додати до списку" 
-                                                      />
+                                          />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -104,17 +104,13 @@
                 </ListView>
             </Grid>
             
-            <!--Progress Bar-->
+            <!--PROGRESS BAR-->
             <ProgressBar Grid.Row="3" Grid.ColumnSpan="3" Height="40" Width="40"  Style="{StaticResource MaterialDesignCircularProgressBar}" 
                          x:Name="ProgressValue" Value="{Binding Path=ProgressValue}" IsIndeterminate="{Binding Path=IsIndeterminate}" Maximum="{Binding Path=Maximum}" Minimum="0" />
 
-
-            <!--Value="{Binding Path=ProgressValue}"-->
-            <!--<ProgressBar x:Name="ProgressValue" Value="{Binding Path=ProgressValue}" IsIndeterminate="{Binding Path=IsIndeterminate}" Grid.Row="3" Grid.ColumnSpan="3" Height="7" 
-                         Maximum="{Binding Path=Maximum}" Minimum="0" Margin="0 20 0 0" />-->
-
-            <materialDesign:Snackbar IsActive="{Binding IsActive}" Grid.ColumnSpan="3" Grid.Row="4">
-                <materialDesign:SnackbarMessage Content="{Binding AddedVulCount}" />
+            <!--SNACK BAR-->
+            <materialDesign:Snackbar Grid.ColumnSpan="3" Grid.Row="4" MessageQueue="{Binding MessageQueue}" Height="60">
+                <!--<materialDesign:SnackbarMessage Content="{Binding AddedVulCount}" />-->
             </materialDesign:Snackbar>
         </Grid>
     </Grid>
