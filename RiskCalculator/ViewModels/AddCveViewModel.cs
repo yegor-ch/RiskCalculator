@@ -48,8 +48,6 @@ namespace RiskCalculator.ViewModels
                 NotifyOfPropertyChange(() => Maximum);
             }
         }
-
-        public bool IsActive { get; set; } = true;
         public string AddedVulCount { get; set; }
         public SnackbarMessageQueue MessageQueue { get; set; }
 
@@ -73,7 +71,7 @@ namespace RiskCalculator.ViewModels
             SelectedVulnerabilities = new BindableCollection<VulnerabilityModel>();
 
             // Создаем свой кастомный экземпляр SnackbarMessageQueue и устанавливаем задержку, сколько будет видно Snackbar.
-            MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(1));
+            MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(1.2));
   
             Maximum = 20;
            
@@ -81,7 +79,7 @@ namespace RiskCalculator.ViewModels
         }
 
 
-        public async void SearchRequest()
+        public void SearchRequest()
         {
             Thread thread = new Thread(GetCveData);
             thread.Start();
