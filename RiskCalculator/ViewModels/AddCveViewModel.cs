@@ -115,12 +115,15 @@ namespace RiskCalculator.ViewModels
             foreach (var item in cve.Result.CVE_Items)
             {              
                 string severity = "";
+                BaseMetricV2 metricV2 = null;
+                BaseMetricV3 metricV3 = null;
 
                 if (item.Impact != null)
                 {
                     if (item.Impact.baseMetricV2 != null)
                     {
                         severity += $"V2: {item.Impact.baseMetricV2.cvssV2.baseScore} {item.Impact.baseMetricV2.severity}";
+                        metricV2 = item.Impact.baseMetricV2;
                     }
                     else
                     {
@@ -131,6 +134,8 @@ namespace RiskCalculator.ViewModels
 
                     if (item.Impact.baseMetricV3 != null)
                     {
+                        metricV3 = item.Impact.baseMetricV3;
+
                         if(item.Impact.baseMetricV3.cvssV3 != null)
                         {                            
                             severity += $"V3.1: {item.Impact.baseMetricV3.cvssV3.baseScore} {item.Impact.baseMetricV3.cvssV3.baseSeverity}";
@@ -150,7 +155,9 @@ namespace RiskCalculator.ViewModels
                 {
                     Id = item.Cve.Meta.Id,
                     Description = item.Cve.Description.description_data[0].Value,
-                    Severity = severity
+                    Severity = severity,
+                    MetricV2 = metricV2,
+                    MetricV3 = metricV3
                 });
             }
         }

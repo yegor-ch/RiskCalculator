@@ -50,11 +50,13 @@ namespace RiskCalculator.Models
 
     public class Impact
     {
-        public Basemetricv2 baseMetricV2 { get; set; }
+        [JsonProperty("Basemetricv2")]
+        public BaseMetricV2 baseMetricV2 { get; set; }
         public BaseMetricV3 baseMetricV3 { get; set; }
     }
 
-    public class Basemetricv2
+    [JsonObject("Basemetricv2")]
+    public class BaseMetricV2
     {
         public Cvssv2 cvssV2 { get; set; }
         public string severity { get; set; }
