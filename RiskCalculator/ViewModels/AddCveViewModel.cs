@@ -65,10 +65,10 @@ namespace RiskCalculator.ViewModels
 
         public BindableCollection<VulnerabilityModel> SearchResultList { get; set; }
 
-        public AddCveViewModel()
+        public AddCveViewModel(BindableCollection<VulnerabilityModel> vulnerabilities)
         {
             SearchResultList = new BindableCollection<VulnerabilityModel>();
-            SelectedVulnerabilities = new BindableCollection<VulnerabilityModel>();
+            SelectedVulnerabilities = vulnerabilities;
 
             // Создаем свой кастомный экземпляр SnackbarMessageQueue и устанавливаем задержку, сколько будет видно Snackbar.
             MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(1.2));
@@ -161,28 +161,20 @@ namespace RiskCalculator.ViewModels
         /// <param name="e"></param>
         public void NewVulnerabilityAdded(SelectionChangedEventArgs e)
         {
-            // Сообщение которое будет выводиться в Snackbar.
-            string message = "";
-
             foreach (var v in e.AddedItems)
             {
+                // Сообщение которое будет выводиться в Snackbar.
+                string message = "";
+
                 SelectedVulnerabilities.Add(v as VulnerabilityModel);
+                SearchResultList.Remove(v as VulnerabilityModel);
 
                 message += $"{(v as VulnerabilityModel).Id} додано до списку.";
+                message += Environment.NewLine;
+                message += $"Всього додано вразливостей: {SelectedVulnerabilities.Count}";
+
+                MessageQueue.Enqueue(message);
             }
-
-            foreach (var v in e.RemovedItems)
-            {
-                SelectedVulnerabilities.Remove(v as VulnerabilityModel);
-
-                message += $"{(v as VulnerabilityModel).Id} видалено зі списку.";
-            }
-
-            message += Environment.NewLine;
-            message += $"Всього додано вразливостей: {SelectedVulnerabilities.Count}";
-
-            MessageQueue.Enqueue(message);
-
         }
 
         public void ClearSearchParams()

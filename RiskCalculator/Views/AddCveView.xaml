@@ -12,13 +12,6 @@
              FontFamily="Champagne &amp; Limousines">
 
     <UserControl.Resources>
-        <Style TargetType="ToggleButton" BasedOn="{StaticResource MaterialDesignActionAccentToggleButton}">
-            <Style.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="#79b700"/>
-                </Trigger> 
-            </Style.Triggers>
-        </Style>
     </UserControl.Resources>
     
     <Grid>
@@ -68,10 +61,11 @@
                 <RadioButton Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="3 роки" />
             </StackPanel>
             <!--cal:Message.Attach="[Event SelectionChanged] = [Action NewVulnerabilityAdded($e)]"-->
+            
             <!--SEARCH RESULT SECTION-->
             <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="20 0">
                 <TextBlock  Text="Результати пошуку:" Foreground="Gray" FontSize="18"/>
-                <ListView x:Name="SearchResultList" Margin="0 30 0 0" SelectionMode="Multiple">
+                <ListView x:Name="SearchResultList" Margin="0 30 0 0">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <cal:ActionMessage MethodName="NewVulnerabilityAdded">
@@ -93,14 +87,13 @@
                             <GridViewColumn Width="auto" Header="Додати">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <ToggleButton Content="X" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" ToolTip="Додати до списку" 
-                                          />
+                                        <ToggleButton Content="+" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" ToolTip="Додати до списку" 
+                                          Style="{StaticResource MaterialDesignActionAccentToggleButton}" Background="#79b700"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
-                    
                 </ListView>
             </Grid>
             
