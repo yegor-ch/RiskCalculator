@@ -91,11 +91,15 @@
     <Compile Include="Models\CveModel.cs" />
     <Compile Include="Models\VulnerabilityModel.cs" />
     <Compile Include="ViewModels\AddCveViewModel.cs" />
+    <Compile Include="ViewModels\CalculatorViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\SelectedVulnerabilitiesViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\AddCveView.xaml.cs">
       <DependentUpon>AddCveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CalculatorView.xaml.cs">
+      <DependentUpon>CalculatorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HomePageView.xaml.cs">
       <DependentUpon>HomePageView.xaml</DependentUpon>
@@ -111,6 +115,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\AddCveView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CalculatorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

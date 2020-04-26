@@ -30,7 +30,7 @@ namespace RiskCalculator.ViewModels
             MenuItems.Add(new MenuItem { Title = "Сканування системи", Kind = "ShieldSearch" });
             
             MenuItems.Add(new MenuItem { Title = "Список вразливостей", Kind = "ViewList", ViewModel = new SelectedVulnerabilitiesViewModel(VulnerabilitiesList) });
-            MenuItems.Add(new MenuItem { Title = "CVSS калькулятор", Kind = "Calculator" });
+            MenuItems.Add(new MenuItem { Title = "CVSS калькулятор", Kind = "Calculator", ViewModel = new CalculatorViewModel(VulnerabilitiesList) });
             MenuItems.Add(new MenuItem { Title = "Метрики", Kind = "ChartBar" });
             MenuItems.Add(new MenuItem { Title = "Оцінювання ризиків", Kind = "Security" });
             MenuItems.Add(new MenuItem { Title = "Результати оцінки", Kind = "Newspaper" });
