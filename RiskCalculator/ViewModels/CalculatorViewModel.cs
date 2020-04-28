@@ -52,7 +52,7 @@ namespace RiskCalculator.ViewModels
 
         public Dictionary<string, Dictionary<string, double>> WeightDict { get; set; }
 
-        public Dictionary<string, string> MetricsKeys { get; set; }
+        public Dictionary<string, string> MetricsIdentifiers { get; set; }
         public Dictionary<string, double> MetricsWeight { get; set; }
 
         
@@ -161,7 +161,7 @@ namespace RiskCalculator.ViewModels
             };
 
             // Метрики относящиеся к Temporal, Envirmental должны быть изначально Not defined.
-            MetricsKeys = new Dictionary<string, string>
+            MetricsIdentifiers = new Dictionary<string, string>
             {
                 { "E", "X" },
                 { "RL", "X" },
@@ -322,28 +322,101 @@ namespace RiskCalculator.ViewModels
 
         #endregion
 
+
+        private double _baseScore;
+        private double _impactSubScore;
+        private double _exploitabalitySubScore;
+        private double _temporalScore;
+        private double _envScore;
+        private double _envModifiedImpactSubScore;
+        private string _cvssVectorString;
+        private VulnerabilityModel _selectedVulnerability;
+
         public double ExploitabilityCoefficient { get; set; } = 8.22;
         public double ScopeCoefficient { get; set; } = 1.08;
-
-        public double BaseScore { get; set; }
-        public double ImpactSubScore { get; set; }
-        public double ExploitabalitySubScore { get; set; }
-
-        public double TemporalScore { get; set; }
-
-        public double EnvScore { get; set; }
-        public double EnvModifiedImpactSubScore { get; set; }
-
+        public double BaseScore
+        {
+            get => _baseScore;
+            set
+            {
+                _baseScore = value;
+                NotifyOfPropertyChange(() => BaseScore);
+            }
+        }
+        public double ImpactSubScore
+        {
+            get => _impactSubScore;
+            set
+            {
+                _impactSubScore = value;
+                NotifyOfPropertyChange(() => ImpactSubScore);
+            }
+        }
+        public double ExploitabalitySubScore
+        {
+            get => _exploitabalitySubScore;
+            set
+            {
+                _exploitabalitySubScore = value;
+                NotifyOfPropertyChange(() => ExploitabalitySubScore);
+            }
+        }
+        public double TemporalScore
+        {
+            get => _temporalScore;
+            set
+            {
+                _temporalScore = value;
+                NotifyOfPropertyChange(() => TemporalScore);
+            }
+        }
+        public double EnvScore
+        {
+            get => _envScore;
+            set
+            {
+                _envScore = value;
+                NotifyOfPropertyChange(() => EnvScore);
+            }
+        }
+        public double EnvModifiedImpactSubScore
+        {
+            get => _envModifiedImpactSubScore;
+            set
+            {
+                _envModifiedImpactSubScore = value;
+                NotifyOfPropertyChange(() => EnvModifiedImpactSubScore);
+            }
+        }
         public double OverallScore { get; set; }
-
-        public string CvssVectorString { get; set; }
-
+        public string CvssVectorString 
+        { 
+            get => _cvssVectorString;
+            set 
+            {
+                _cvssVectorString = value; 
+                NotifyOfPropertyChange(() => CvssVectorString); 
+            } 
+        }
         public string CvssVersionIdentifier { get; set; } = "CVSS:3.1";
-
         public CvssMetrics Metrics { get; set; }
-
-
         public BindableCollection<VulnerabilityModel> Vulnerabilities { get; set; }
+        public VulnerabilityModel SelectedVulnerability  
+        { 
+            get => _selectedVulnerability;
+            set 
+            { 
+                if(value != null)
+                {
+                    _selectedVulnerability = value;
+                }
+                
+                NotifyOfPropertyChange(() => SelectedVulnerability);
+
+                InitializeCalculator(SelectedVulnerability);
+             }
+        }
+
         public CalculatorViewModel(BindableCollection<VulnerabilityModel> Vulnerabilities)
         {
             this.Vulnerabilities = Vulnerabilities;
@@ -363,23 +436,21 @@ namespace RiskCalculator.ViewModels
 
             SetMetricKey(name, value);
 
-            //InitializeMetricWeight(name, value);
-
             InitializeMetrics(name, value);
 
-            CvssVectorString = ConstructVectorString(Metrics.MetricsKeys);
+            CvssVectorString = ConstructVectorString(Metrics.MetricsIdentifiers);
 
             CalculateCvss3(Metrics.MetricsWeight);
         }
 
         public void SetMetricKey(string keyName, string value)
         {
-            if (Metrics.MetricsKeys.ContainsKey(keyName))
+            if (Metrics.MetricsIdentifiers.ContainsKey(keyName))
             {
-                Metrics.MetricsKeys.Remove(keyName);
+                Metrics.MetricsIdentifiers.Remove(keyName);
             }
 
-            Metrics.MetricsKeys.Add(keyName, value);
+            Metrics.MetricsIdentifiers.Add(keyName, value);
         }
 
         public void SetMetricWeight(string metricName, double value)
@@ -404,7 +475,7 @@ namespace RiskCalculator.ViewModels
                     // Получаем значение Scope.
                     // Сhanged or Unchanged (U,C).
                     // PRU, PRC.
-                    correctedName += Metrics.MetricsKeys["S"];
+                    correctedName += Metrics.MetricsIdentifiers["S"];
                 }
                 catch(KeyNotFoundException)
                 {
@@ -418,8 +489,8 @@ namespace RiskCalculator.ViewModels
             {
                 try
                 {
-                    InitializeMetrics("PR", Metrics.MetricsKeys["PR"]);
-                    InitializeMetrics("MPR", Metrics.MetricsKeys["MPR"]);
+                    InitializeMetrics("PR", Metrics.MetricsIdentifiers["PR"]);
+                    InitializeMetrics("MPR", Metrics.MetricsIdentifiers["MPR"]);
                 }
                 catch(KeyNotFoundException)
                 {
@@ -435,7 +506,7 @@ namespace RiskCalculator.ViewModels
                 string scopeState;
                 try
                 {
-                    scopeState = Metrics.MetricsKeys["MS"] == "X" ? Metrics.MetricsKeys["S"] : Metrics.MetricsKeys["MS"];
+                    scopeState = Metrics.MetricsIdentifiers["MS"] == "X" ? Metrics.MetricsIdentifiers["S"] : Metrics.MetricsIdentifiers["MS"];
                 }
                 catch(KeyNotFoundException)
                 {
@@ -449,7 +520,7 @@ namespace RiskCalculator.ViewModels
                 {
                     try
                     {
-                        value = Metrics.MetricsKeys["PR"];
+                        value = Metrics.MetricsIdentifiers["PR"];
                     }
                     catch(KeyNotFoundException)
                     {
@@ -464,13 +535,13 @@ namespace RiskCalculator.ViewModels
                 // MS вляет на MPR, поэтому перерасчитываем его.
                 if (metricName.Equals("MS"))
                 {
-                    InitializeMetrics("MPR", Metrics.MetricsKeys["MPR"]);
+                    InitializeMetrics("MPR", Metrics.MetricsIdentifiers["MPR"]);
                 }
 
                 // Если значение метрики Not defined - X, метрика берется из уже определенных базовых метрик.
                 if (value.Equals("X"))
                 {
-                    value = Metrics.MetricsKeys[metricName.Substring(1)];
+                    value = Metrics.MetricsIdentifiers[metricName.Substring(1)];
                 }
 
                 // Получаем имя метрики без М.
@@ -529,7 +600,7 @@ namespace RiskCalculator.ViewModels
 
             double impactSubScoreMultiplier = 1 - (1 - metricWeightC) * (1 - metricWeightI) * (1 - metricWeightA);
 
-            if(Metrics.MetricsKeys["S"] == "U")
+            if(Metrics.MetricsIdentifiers["S"] == "U")
             {
                 ImpactSubScore = metricWeightS * impactSubScoreMultiplier;
             }
@@ -544,7 +615,7 @@ namespace RiskCalculator.ViewModels
             }
             else
             {
-                if (Metrics.MetricsKeys["S"] == "U")
+                if (Metrics.MetricsIdentifiers["S"] == "U")
                 {
                     BaseScore = RaundUp(Math.Min(ExploitabalitySubScore + ImpactSubScore, 10));
                 }
@@ -559,7 +630,7 @@ namespace RiskCalculator.ViewModels
             // Пост-инициализация метрик Temporal, Environmental.
             // Пройдемся по всем необязательным метрикам и если там имеются Not defined (X) метрики,
             // возьмем их
-            var notDefValues = Metrics.MetricsKeys.Where(v => v.Value == "X");
+            var notDefValues = Metrics.MetricsIdentifiers.Where(v => v.Value == "X");
 
             foreach (var item in notDefValues)
             {
@@ -595,9 +666,9 @@ namespace RiskCalculator.ViewModels
             double envImpactSubScoreMultiplier = Math.Min(1 - (1 - metricWeightMC * metricWeightCR) * 
                 (1 - metricWeightMI * metricWeightIR) * (1 - metricWeightMA * metricWeightAR), 0.915);
 
-            if(Metrics.MetricsKeys["MS"] == "U" || 
-              (Metrics.MetricsKeys["MS"] == "X" && 
-               Metrics.MetricsKeys["S"] == "U"))
+            if(Metrics.MetricsIdentifiers["MS"] == "U" || 
+              (Metrics.MetricsIdentifiers["MS"] == "X" && 
+               Metrics.MetricsIdentifiers["S"] == "U"))
             {
                 EnvModifiedImpactSubScore = metricWeightMS * envImpactSubScoreMultiplier;
                 EnvScore = RaundUp(RaundUp(Math.Min(EnvModifiedImpactSubScore + envModifiedExploitabalitySubScore, 10)) * metricWeightE * metricWeightRL * metricWeightRC);
@@ -687,64 +758,91 @@ namespace RiskCalculator.ViewModels
         /// </summary>
         /// <param name="metricName">Имя свойства метрики которое нужно инициализировать.</param>
         /// <param name="key">Ключ по-которому будет осуществляться доступ значения в словаре.</param>
-        public void InitializeMetricWeight(string metricName, string key)
-        {
-            string correctedName = metricName;
+        //public void InitializeMetricWeight(string metricName, string key)
+        //{
+        //    string correctedName = metricName;
 
-            if (correctedName.StartsWith("M") && !key.Equals("X"))
-            {
-                // Получаем имя метрики без М.
-                // MAV - AV, MAC - AC ...
-                correctedName = metricName.Substring(1);
-            }
-            else if (key.Equals("X"))
-            {
+        //    if (correctedName.StartsWith("M") && !key.Equals("X"))
+        //    {
+        //        // Получаем имя метрики без М.
+        //        // MAV - AV, MAC - AC ...
+        //        correctedName = metricName.Substring(1);
+        //    }
+        //    else if (key.Equals("X"))
+        //    {
 
-            }
+        //    }
 
-            // При установке PR нужно проверить установлено ли Scope.
-            if (correctedName.Equals("PR"))
-            {
-                // Запоминаем ключ PR - пригодится, когда будет изменено Scope.
-                Metrics.PR_Key = key;
+        //    // При установке PR нужно проверить установлено ли Scope.
+        //    if (correctedName.Equals("PR"))
+        //    {
+        //        // Запоминаем ключ PR - пригодится, когда будет изменено Scope.
+        //        Metrics.PR_Key = key;
 
-                correctedName += S_U ? "U" : S_C ? "C" : "";
+        //        correctedName += S_U ? "U" : S_C ? "C" : "";
 
-                if (metricName.Equals(correctedName)) return;
-            }
+        //        if (metricName.Equals(correctedName)) return;
+        //    }
 
-            if(correctedName.Equals("S"))
-            {
-                // Если было изменено S нужно пересчитать PR.
-                InitializeMetricWeight("PR", Metrics.PR_Key);
-            }
+        //    if(correctedName.Equals("S"))
+        //    {
+        //        // Если было изменено S нужно пересчитать PR.
+        //        InitializeMetricWeight("PR", Metrics.PR_Key);
+        //    }
 
-            if(correctedName.Equals("C") || correctedName.Equals("I") || correctedName.Equals("A"))
-            {
-                correctedName = "CIA";
-            }
+        //    if(correctedName.Equals("C") || correctedName.Equals("I") || correctedName.Equals("A"))
+        //    {
+        //        correctedName = "CIA";
+        //    }
 
-            if (correctedName.Equals("CR") || correctedName.Equals("IR") || correctedName.Equals("AR"))
-            {
-                correctedName = "CIAR";
-            }
+        //    if (correctedName.Equals("CR") || correctedName.Equals("IR") || correctedName.Equals("AR"))
+        //    {
+        //        correctedName = "CIAR";
+        //    }
         
-            // Нашли нужный словарь.
-            var metricProperty = Metrics.GetType().GetProperty(correctedName);
+        //    // Нашли нужный словарь.
+        //    var metricProperty = Metrics.GetType().GetProperty(correctedName);
 
-            // Получили значение из словаря по ключу.
-            double metricWeight = (metricProperty.GetValue(Metrics) as Dictionary<string, double>)[key];
+        //    // Получили значение из словаря по ключу.
+        //    double metricWeight = (metricProperty.GetValue(Metrics) as Dictionary<string, double>)[key];
 
-            // Если correctedName изменялся, значит надо установить его назад, чтобы свойства *_Weight записывались без ошибок.
-            // Потому что словарь может быть один на несколько метрик, но сами значения метрик должы записываться в свои поля.
-            if (!correctedName.Equals(metricName))
+        //    // Если correctedName изменялся, значит надо установить его назад, чтобы свойства *_Weight записывались без ошибок.
+        //    // Потому что словарь может быть один на несколько метрик, но сами значения метрик должы записываться в свои поля.
+        //    if (!correctedName.Equals(metricName))
+        //    {
+        //        correctedName = metricName;
+        //    }
+
+        //    // Установили значение метрики *_Weight в значение полученное из словаря.
+        //    Metrics.GetType().GetProperty(correctedName + "_Weight").SetValue(Metrics, metricWeight);
+        //}
+
+        public void InitializeCalculator(VulnerabilityModel selectedVulnerability)
+        {
+            string cvssVersion = selectedVulnerability.VectorV3.Substring(selectedVulnerability.VectorV3.IndexOf('/'));
+            var identifiers = ParseVectorString(selectedVulnerability.VectorV3, cvssVersion);
+
+
+            foreach (var i in identifiers)
             {
-                correctedName = metricName;
+                InitializeMetrics(i.Key, i.Value);
             }
 
-            // Установили значение метрики *_Weight в значение полученное из словаря.
-            Metrics.GetType().GetProperty(correctedName + "_Weight").SetValue(Metrics, metricWeight);
+
+            // Нужно установить интерфейс калькулятора (radio-buttons) в значение идентификаторов выбранной уязвимости.
+
+            InitializeRadioButtons(identifiers);
+
+
+            CalculateCvss3(Metrics.MetricsWeight);
+        }
+
+        private void InitializeRadioButtons(Dictionary<string, string> identifiers)
+        {
+            foreach (var i in identifiers)
+            {
+                this.GetType().GetProperty($"{i.Key}_{i.Value}").SetValue(this, true);
+            }           
         }
     }
 }
-;
