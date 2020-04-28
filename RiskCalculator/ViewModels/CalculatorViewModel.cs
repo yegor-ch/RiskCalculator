@@ -338,6 +338,8 @@ namespace RiskCalculator.ViewModels
 
         public string CvssVectorString { get; set; }
 
+        public string CvssVersionIdentifier { get; set; } = "CVSS:3.1";
+
         public CvssMetrics Metrics { get; set; }
 
 
@@ -625,7 +627,7 @@ namespace RiskCalculator.ViewModels
             try
             {
                 vector =
-                    "CVSS:3.0" +
+                    CvssVersionIdentifier +
                     "/AV:" + idenifiers["AV"] +
                     "/AC:" + idenifiers["AC"] +
                     "/PR:" + idenifiers["PR"] +
@@ -657,6 +659,27 @@ namespace RiskCalculator.ViewModels
             vector += idenifiers["MA"] != "X" ? "/MA:" + idenifiers["MA"] : "";
 
             return vector;
+        }
+
+        /// <summary>
+        /// Произваодит парсинг CVSS вектора в словарь идентификаторов.
+        /// </summary>
+        /// <param name="vector">Входной CVSS вектор.</param>
+        /// <param name="cvssVersion">CVSS версия вектора.</param>
+        /// <returns>Словарь идентификаторов.</returns>
+        public Dictionary<string, string> ParseVectorString(string vector, string cvssVersion)
+        {
+            var metricNameValue = vector.Substring(cvssVersion.Length + 1).Split('/');
+            Dictionary<string, string> identifires = new Dictionary<string, string>();
+
+            for (int i = 0; i < metricNameValue.Length; i++)
+            {
+                var singleMetric = metricNameValue[i].Split(':');
+
+                identifires.Add(singleMetric[0], singleMetric[1]);
+            }
+
+            return identifires;
         }
 
         /// <summary>
