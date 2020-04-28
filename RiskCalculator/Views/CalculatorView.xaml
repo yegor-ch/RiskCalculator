@@ -13,14 +13,9 @@
              >
     <UserControl.Resources>
         <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
-            <Style.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="#2980b9"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    
+
     <Grid Margin="0 20 0 0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350"/>
@@ -39,8 +34,8 @@
         
         <!--Calculator version switcher-->
         <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" Margin="0 0 20 0" VerticalAlignment="Bottom">
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="True" Content="V3.1" />
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="V2.1" />
+            <RadioButton Margin="4" IsChecked="True" Content="V3.1" />
+            <RadioButton Margin="4" IsChecked="False" Content="V2.1" />
         </StackPanel>
 
         <!--CALCULATOR SECTION-->
@@ -57,13 +52,14 @@
                             <RowDefinition Height="200"/>
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
-
+                        
                         <!--SCORES-->
                         <Grid Grid.Row="0" Grid.Column="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
+
                             <StackPanel Grid.Column="0">
                                 <TextBlock Margin="0 4" FontSize="14" Text="CVSS Base Score:" FontWeight="Bold"/>
                                 <TextBlock Margin="0 4" FontSize="14" Text="Impact Subscore:"/>
@@ -72,6 +68,15 @@
                                 <TextBlock Margin="0 4" FontSize="14" Text="CVSS Environmental Score:"/>
                                 <TextBlock Margin="0 4" FontSize="14" Text="Modified Impact Subscore:"/>
                                 <TextBlock Margin="0 4" FontSize="14" Text="Overall CVSS Score:" FontWeight="Bold"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Margin="0 4" FontSize="14" Text="{Binding Path=BaseScore}" FontWeight="Bold"/>
+                                <TextBlock Margin="0 4" FontSize="14" Text="{Binding Path=ImpactSubScore}"/>
+                                <TextBlock Margin="0 4" FontSize="14" Text="{Binding Path=ExploitabalitySubScore}"/>
+                                <TextBlock Margin="0 4" FontSize="14" Text="{Binding Path=TemporalScore}" FontWeight="Bold"/>
+                                <TextBlock Margin="0 4" FontSize="14" Text="{Binding Path=EnvScore}"/>
+                                <TextBlock Margin="0 4" FontSize="14" Text="{Binding Path=EnvModifiedImpactSubScore}"/>
+                                <TextBlock Margin="0 4" FontSize="14" Text="{Binding Path=BaseScore}" FontWeight="Bold"/>
                             </StackPanel>
                         </Grid>
 
@@ -93,59 +98,59 @@
                                 <TextBlock Text="Exploitability Metrics" Margin="5" FontSize="20" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <TextBlock Text="Attack Vector (AV)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}" />
                                 <WrapPanel Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Network (AV:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Adjacent Network (AV:A)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Local (AV:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" IsChecked="False" Content="Physical (AV:P)" />
+                                    <RadioButton x:Name="AV_N" IsChecked="{Binding Path=AV_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Margin="2" Content="Network (AV:N)"/>
+                                    <RadioButton x:Name="AV_A" IsChecked="{Binding Path=AV_A}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Margin="2" Content="Adjacent Network (AV:A)" />
+                                    <RadioButton x:Name="AV_L" IsChecked="{Binding Path=AV_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Margin="2" Content="Local (AV:L)" />
+                                    <RadioButton x:Name="AV_P" IsChecked="{Binding Path=AV_P}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Margin="0" Content="Physical (AV:P)" />
                                 </WrapPanel>
 
                                 <TextBlock Text="Attack Complexity (AC)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (AC:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (AC:H)" />
-                                </StackPanel>
+                                    <RadioButton x:Name="AC_L" IsChecked="{Binding Path=AC_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (AC:L)" />
+                                    <RadioButton x:Name="AC_H" IsChecked="{Binding Path=AC_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (AC:H)" />
+                                </StackPanel>    
 
                                 <TextBlock Text="Privileges Required (PR)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (PR:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (PR:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (PR:H)" />
+                                    <RadioButton x:Name="PR_N" IsChecked="{Binding Path=PR_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (PR:N)" />
+                                    <RadioButton x:Name="PR_L" IsChecked="{Binding Path=PR_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (PR:L)" />
+                                    <RadioButton x:Name="PR_H" IsChecked="{Binding Path=PR_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (PR:H)" />
                                 </StackPanel>
 
                                 <TextBlock Text="User Interaction (UI)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (UI:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Required (UI:R)" />
-                                </StackPanel>
+                                    <RadioButton x:Name="UI_N" IsChecked="{Binding Path=UI_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (UI:N)" />
+                                    <RadioButton x:Name="UI_R" IsChecked="{Binding Path=UI_R}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Required (UI:R)" />
+                                </StackPanel>     
                             </StackPanel>
 
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="Scope (S)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}" />
                                 <WrapPanel Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Unchanged (S:U)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Changed (S:C)" />
-                                </WrapPanel>
+                                    <RadioButton x:Name="S_U" IsChecked="{Binding Path=S_U}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Unchanged (S:U)" />
+                                    <RadioButton x:Name="S_C" IsChecked="{Binding Path=S_C}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Changed (S:C)" />
+                                </WrapPanel>     
 
                                 <TextBlock Text="Impact Metrics" Margin="5" FontSize="20" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <TextBlock Text="Confidentiality Impact (C)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (C:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (C:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (C:H)" />
+                                    <RadioButton x:Name="C_N" IsChecked="{Binding Path=C_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (C:N)" />
+                                    <RadioButton x:Name="C_L" IsChecked="{Binding Path=C_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (C:L)" />
+                                    <RadioButton x:Name="C_H" IsChecked="{Binding Path=C_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (C:H)" />
                                 </StackPanel>
 
                                 <TextBlock Text="Integrity Impact (I)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (I:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (I:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (I:H)" />
+                                    <RadioButton x:Name="I_N" IsChecked="{Binding Path=I_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (I:N)" />
+                                    <RadioButton x:Name="I_L" IsChecked="{Binding Path=I_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (I:L)" />
+                                    <RadioButton x:Name="I_H" IsChecked="{Binding Path=I_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (I:H)" />
                                 </StackPanel>
 
                                 <TextBlock Text="Availability Impact (A)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (A:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (A:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (A:H)" />
+                                    <RadioButton x:Name="A_N" IsChecked="{Binding Path=A_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (A:N)" />
+                                    <RadioButton x:Name="A_L" IsChecked="{Binding Path=A_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (A:L)" />
+                                    <RadioButton x:Name="A_H" IsChecked="{Binding Path=A_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (A:H)" />
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
@@ -158,28 +163,28 @@
                             <StackPanel>
                                 <TextBlock Text="Exploitability (E)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <WrapPanel Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (E:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Unproven that exploit exists (E:U)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Proof of concept code (E:P)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Functional exploit exists (E:F)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (E:H)" />
-                                </WrapPanel>
+                                    <RadioButton x:Name="E_X" IsChecked="{Binding Path=E_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (E:X)" />
+                                    <RadioButton x:Name="E_U" IsChecked="{Binding Path=E_U}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Unproven that exploit exists (E:U)" />
+                                    <RadioButton x:Name="E_P" IsChecked="{Binding Path=E_P}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Proof of concept code (E:P)" />
+                                    <RadioButton x:Name="E_F" IsChecked="{Binding Path=E_F}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Functional exploit exists (E:F)" />
+                                    <RadioButton x:Name="E_H" IsChecked="{Binding Path=E_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (E:H)" />
+                                </WrapPanel>     
 
                                 <TextBlock Text="Remediation Level (RL)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (RL:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Official fix (RL:O)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Temporary fix (RL:T)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Workaround (RL:W)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Unavailable (RL:U)" />
+                                    <RadioButton x:Name="RL_X" IsChecked="{Binding Path=RL_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (RL:X)" />
+                                    <RadioButton x:Name="RL_O" IsChecked="{Binding Path=RL_O}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Official fix (RL:O)" />
+                                    <RadioButton x:Name="RL_T" IsChecked="{Binding Path=RL_T}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Temporary fix (RL:T)" />
+                                    <RadioButton x:Name="RL_W" IsChecked="{Binding Path=RL_W}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Workaround (RL:W)" />
+                                    <RadioButton x:Name="RL_U" IsChecked="{Binding Path=RL_U}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Unavailable (RL:U)" />
                                 </StackPanel>
 
                                 <TextBlock Text="Report Confidence (RC)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (RC:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="OUnknown (RC:U)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Reasonable (RC:R)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Confirmed (RC:C)" />
+                                    <RadioButton x:Name="RC_X" IsChecked="{Binding Path=RC_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (RC:X)" />
+                                    <RadioButton x:Name="RC_U" IsChecked="{Binding Path=RC_U}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="OUnknown (RC:U)" />
+                                    <RadioButton x:Name="RC_R" IsChecked="{Binding Path=RC_R}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Reasonable (RC:R)" />
+                                    <RadioButton x:Name="RC_C" IsChecked="{Binding Path=RC_C}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Confirmed (RC:C)" />
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
@@ -197,92 +202,92 @@
                                 <TextBlock Text="Base Modifiers" Margin="5" FontSize="20" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <TextBlock Text="Attack Vector (AV)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}" />
                                 <WrapPanel Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (MAV:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Network (MAV:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Adjacent Network (MAV:A)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" IsChecked="False" Content="Local (MAV:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" IsChecked="False" Content="Physical (MAV:P)" />
+                                    <RadioButton x:Name="MAV_X" IsChecked="{Binding Path=MAV_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (MAV:X)" />
+                                    <RadioButton x:Name="MAV_N" IsChecked="{Binding Path=MAV_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Network (MAV:N)" />
+                                    <RadioButton x:Name="MAV_A" IsChecked="{Binding Path=MAV_A}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Adjacent Network (MAV:A)" />
+                                    <RadioButton x:Name="MAV_L" IsChecked="{Binding Path=MAV_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Content="Local (MAV:L)" />
+                                    <RadioButton x:Name="MAV_P" IsChecked="{Binding Path=MAV_P}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Content="Physical (MAV:P)" />
                                 </WrapPanel>
 
                                 <TextBlock Text="Attack Complexity (AC)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (MAC:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (MAC:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (MAC:H)" />
+                                    <RadioButton x:Name="MAC_X" IsChecked="{Binding Path=MAC_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (MAC:X)" />
+                                    <RadioButton x:Name="MAC_L" IsChecked="{Binding Path=MAC_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (MAC:L)" />
+                                    <RadioButton x:Name="MAC_H" IsChecked="{Binding Path=MAC_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (MAC:H)" />
                                 </StackPanel>
 
                                 <TextBlock Text="Privileges Required (PR)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <WrapPanel Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (MPR:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (MPR:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (MPR:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (MPR:H)" />
+                                    <RadioButton x:Name="MPR_X" IsChecked="{Binding Path=MPR_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (MPR:X)" />
+                                    <RadioButton x:Name="MPR_N" IsChecked="{Binding Path=MPR_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (MPR:N)" />
+                                    <RadioButton x:Name="MPR_L" IsChecked="{Binding Path=MPR_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (MPR:L)" />
+                                    <RadioButton x:Name="MPR_H" IsChecked="{Binding Path=MPR_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (MPR:H)" />
                                 </WrapPanel>
 
                                 <TextBlock Text="User Interaction (UI)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (MUI:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (MUI:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Required (MUI:R)" />
+                                    <RadioButton x:Name="MUI_X" IsChecked="{Binding Path=MUI_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (MUI:X)" />
+                                    <RadioButton x:Name="MUI_N" IsChecked="{Binding Path=MUI_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (MUI:N)" />
+                                    <RadioButton x:Name="MUI_R" IsChecked="{Binding Path=MUI_R}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Required (MUI:R)" />
                                 </StackPanel>
 
                                 <TextBlock Text="Scope (S)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <StackPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (MS:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Unchanged (MS:U)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Changed (MS:C)" />
+                                    <RadioButton x:Name="MS_X" IsChecked="{Binding Path=MS_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (MS:X)" />
+                                    <RadioButton x:Name="MS_U" IsChecked="{Binding Path=MS_U}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Unchanged (MS:U)" />
+                                    <RadioButton x:Name="MS_C" IsChecked="{Binding Path=MS_C}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Changed (MS:C)" />
                                 </StackPanel>
 
                                 <TextBlock Text="Impact Metrics" Margin="5" FontSize="20" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <TextBlock Text="Confidentiality Impact (C)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}" />
                                 <WrapPanel Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (MC:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (MC:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (MC:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" IsChecked="False" Content="High (MC:H)" />
+                                    <RadioButton x:Name="MC_X" IsChecked="{Binding Path=MC_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (MC:X)" />
+                                    <RadioButton x:Name="MC_N" IsChecked="{Binding Path=MC_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (MC:N)" />
+                                    <RadioButton x:Name="MC_L" IsChecked="{Binding Path=MC_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (MC:L)" />
+                                    <RadioButton x:Name="MC_H" IsChecked="{Binding Path=MC_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Content="High (MC:H)" />
                                 </WrapPanel>
                             </StackPanel>
 
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="Integrity Impact (I)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <WrapPanel Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (MI:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (MI:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (MI:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (MI:H)" />
+                                    <RadioButton x:Name="MI_X" IsChecked="{Binding Path=MI_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (MI:X)" />
+                                    <RadioButton x:Name="MI_N" IsChecked="{Binding Path=MI_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (MI:N)" />
+                                    <RadioButton x:Name="MI_L" IsChecked="{Binding Path=MI_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (MI:L)" />
+                                    <RadioButton x:Name="MI_H" IsChecked="{Binding Path=MI_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (MI:H)" />
                                 </WrapPanel>
 
                                 <TextBlock Text="Availability Impact (A)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <WrapPanel Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (MA:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="None (MA:N)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (MA:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (MA:H)" />
+                                    <RadioButton x:Name="MA_X" IsChecked="{Binding Path=MA_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (MA:X)" />
+                                    <RadioButton x:Name="MA_N" IsChecked="{Binding Path=MA_N}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="None (MA:N)" />
+                                    <RadioButton x:Name="MA_L" IsChecked="{Binding Path=MA_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (MA:L)" />
+                                    <RadioButton x:Name="MA_H" IsChecked="{Binding Path=MA_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (MA:H)" />
                                 </WrapPanel>
 
                                 <TextBlock Text="Impact Subscore Modifiers" Margin="5" FontSize="20" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <TextBlock Text="Confidentiality Requirement (CR)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <WrapPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (CR:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (CR:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Medium (CR:M)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (CR:H)" />
+                                    <RadioButton x:Name="CR_X" IsChecked="{Binding Path=CR_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (CR:X)" />
+                                    <RadioButton x:Name="CR_L" IsChecked="{Binding Path=CR_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (CR:L)" />
+                                    <RadioButton x:Name="CR_M" IsChecked="{Binding Path=CR_M}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Medium (CR:M)" />
+                                    <RadioButton x:Name="CR_H" IsChecked="{Binding Path=CR_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (CR:H)" />
                                 </WrapPanel>
 
                                 <TextBlock Text="Integrity Requirement (IR)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <WrapPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (IR:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (IR:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Medium (IR:M)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (IR:H)" />
+                                    <RadioButton x:Name="IR_X" IsChecked="{Binding Path=IR_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (IR:X)" />
+                                    <RadioButton x:Name="IR_L" IsChecked="{Binding Path=IR_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (IR:L)" />
+                                    <RadioButton x:Name="IR_M" IsChecked="{Binding Path=IR_M}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Medium (IR:M)" />
+                                    <RadioButton x:Name="IR_H" IsChecked="{Binding Path=IR_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (IR:H)" />
                                 </WrapPanel>
 
                                 <TextBlock Text="Availability Requirement (AR)" Margin="5" FontSize="15" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
                                 <WrapPanel Orientation="Horizontal" Margin="5">
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Not Defined (AR:X)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Low (AR:L)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="Medium (AR:M)" />
-                                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" IsChecked="False" Content="High (AR:H)" />
+                                    <RadioButton x:Name="AR_X" IsChecked="{Binding Path=AR_X}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Not Defined (AR:X)" />
+                                    <RadioButton x:Name="AR_L" IsChecked="{Binding Path=AR_L}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Low (AR:L)" />
+                                    <RadioButton x:Name="AR_M" IsChecked="{Binding Path=AR_M}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="Medium (AR:M)" />
+                                    <RadioButton x:Name="AR_H" IsChecked="{Binding Path=AR_H}" cal:Message.Attach="[Event Checked] = [Action OnCheckedChanged($eventArgs)]" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="2" Content="High (AR:H)" />
                                 </WrapPanel>
                             </StackPanel>
                         </Grid>
