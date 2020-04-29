@@ -819,11 +819,15 @@ namespace RiskCalculator.ViewModels
 
         public void InitializeCalculator(VulnerabilityModel selectedVulnerability)
         {
-            string cvssVersion = selectedVulnerability.VectorV3.Substring(selectedVulnerability.VectorV3.IndexOf('/'));
-            var identifiers = ParseVectorString(selectedVulnerability.VectorV3, cvssVersion);
+            string vector = selectedVulnerability.MetricV3.cvssV3.vectorString;
+            string cvssVersion = vector.Substring(0, vector.IndexOf('/'));
+         
+            foreach (var i in ParseVectorString(vector, cvssVersion))
+            {
+                SetMetricKey(i.Key, i.Value);
+            }
 
-
-            foreach (var i in identifiers)
+            foreach (var i in Metrics.MetricsIdentifiers)
             {
                 InitializeMetrics(i.Key, i.Value);
             }
@@ -831,7 +835,7 @@ namespace RiskCalculator.ViewModels
 
             // Нужно установить интерфейс калькулятора (radio-buttons) в значение идентификаторов выбранной уязвимости.
 
-            InitializeRadioButtons(identifiers);
+            InitializeRadioButtons(Metrics.MetricsIdentifiers);
 
 
             CalculateCvss3(Metrics.MetricsWeight);
@@ -841,7 +845,7 @@ namespace RiskCalculator.ViewModels
         {
             foreach (var i in identifiers)
             {
-                this.GetType().GetProperty($"{i.Key}_{i.Value}").SetValue(this, true);
+                this.GetType().GetProperty($"{i.Key}_{i.Value}").SetValue(this, true);                
             }           
         }
     }
