@@ -1177,6 +1177,8 @@ namespace RiskCalculator.ViewModels
              }
         }
 
+        public bool IsCleanFormClicked { get; set; }
+
         public CalculatorViewModel(BindableCollection<VulnerabilityModel> Vulnerabilities)
         {
             this.Vulnerabilities = Vulnerabilities;
@@ -1187,6 +1189,11 @@ namespace RiskCalculator.ViewModels
 
         public void OnCheckedChanged(RoutedEventArgs e)
         {
+            // Если была нажата кнопка очистки формы и метрик уязвимости, будет заходить срабатывать событие
+            // так как для кажлого Radio_btn в сеттере вызываем NotifyOnPropertyChange.
+            // Будет бросать ошибки, если пустим в данном случае далее.
+            if (IsCleanFormClicked) return;             
+
             string rbName = (e.OriginalSource as RadioButton).Name;
 
             int divider = rbName.IndexOf('_');
@@ -1609,6 +1616,32 @@ namespace RiskCalculator.ViewModels
             {
                 this.GetType().GetProperty($"{i.Key}_{i.Value}").SetValue(this, flag);                
             }           
+        }
+
+        public void ClearForm()
+        {            
+            IsCleanFormClicked = true;
+
+            CvssVectorString = string.Empty;
+
+            BaseScore = 0;
+            ImpactSubScore = 0;
+            ExploitabalitySubScore = 0;
+            TemporalScore = 0;
+            EnvModifiedImpactSubScore = 0;
+            EnvScore = 0;
+            OverallScore = 0;
+
+            // Сначала установим все указанные метрики в false.
+            InitializeRadioButtons(Metrics.MetricsIdentifiers, false);
+
+            Metrics.MetricsIdentifiers = new Dictionary<string, string>(Metrics.ConstMetricsIdentifiers);
+            Metrics.MetricsWeight.Clear();
+
+            // А теперь установим в состояние по-умолчянию метрики T, E.
+            InitializeRadioButtons(Metrics.MetricsIdentifiers, true);
+
+            IsCleanFormClicked = false;
         }
     }
 }
