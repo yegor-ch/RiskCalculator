@@ -53,11 +53,10 @@ namespace RiskCalculator.ViewModels
         public Dictionary<string, Dictionary<string, double>> WeightDict { get; set; }
 
         public Dictionary<string, string> MetricsIdentifiers { get; set; }
+
+        public Dictionary<string, string> ConstMetricsIdentifiers { get; private set; }
+
         public Dictionary<string, double> MetricsWeight { get; set; }
-
-        
-
-        public string PR_Key { get; set; }
 
         public CvssMetrics()
         {
@@ -160,8 +159,8 @@ namespace RiskCalculator.ViewModels
                 { "CIAR", CIAR }
             };
 
-            // Метрики относящиеся к Temporal, Envirmental должны быть изначально Not defined.
-            MetricsIdentifiers = new Dictionary<string, string>
+            // Определим константные метрики, которые будут использоваться, когда полученный вектор не будет иметь значений Temporal, Envirmental.
+            ConstMetricsIdentifiers = new Dictionary<string, string>
             {
                 { "E", "X" },
                 { "RL", "X" },
@@ -177,8 +176,11 @@ namespace RiskCalculator.ViewModels
                 { "CR",  "X" },
                 { "IR",  "X" },
                 { "AR",  "X" }
-                
+
             };
+
+            // Метрики относящиеся к Temporal, Envirmental должны быть изначально Not defined.
+            MetricsIdentifiers = new Dictionary<string, string>(ConstMetricsIdentifiers);
 
             MetricsWeight = new Dictionary<string, double>();
         }
@@ -190,138 +192,896 @@ namespace RiskCalculator.ViewModels
         #region BOOLEAN RADIO PROPERTIES
 
         #region Base Score Metrics
+        
         // Attack Vector (AV)
-        public bool AV_N { get; set; }
-        public bool AV_A { get; set; }
-        public bool AV_L { get; set; }
-        public bool AV_P { get; set; }
+        private bool _av_n;
+        public bool AV_N
+        {
+            get => _av_n;
+            set
+            {
+                _av_n = value;
+                NotifyOfPropertyChange(() => AV_N);
+            }
+        }
+
+        private bool _av_a;
+        public bool AV_A
+        {
+            get => _av_a;
+            set
+            {
+                _av_a = value;
+                NotifyOfPropertyChange(() => AV_A);
+            }
+        }
+
+        private bool _av_l;
+        public bool AV_L
+        {
+            get => _av_l;
+            set
+            {
+                _av_l = value;
+                NotifyOfPropertyChange(() => AV_L);
+            }
+        }
+
+        private bool _av_p;
+        public bool AV_P
+        {
+            get => _av_p;
+            set
+            {
+                _av_p = value;
+                NotifyOfPropertyChange(() => AV_P);
+            }
+        }
 
         // Attack Complexity (AC)
-        public bool AC_L { get; set; }
-        public bool AC_H { get; set; }
+        private bool _ac_l;
+        public bool AC_L
+        {
+            get => _ac_l;
+            set
+            {
+                _ac_l = value;
+                NotifyOfPropertyChange(() => AC_L);
+            }
+        }
+
+        private bool _ac_h;
+        public bool AC_H
+        {
+            get => _ac_h;
+            set
+            {
+                _ac_h = value;
+                NotifyOfPropertyChange(() => AC_H);
+            }
+        }
 
         // Privileges Required (PR)
-        public bool PR_N { get; set; }
-        public bool PR_L { get; set; }
-        public bool PR_H { get; set; }
+        private bool _pr_n;
+        public bool PR_N
+        {
+            get => _pr_n;
+            set
+            {
+                _pr_n = value;
+                NotifyOfPropertyChange(() => PR_N);
+            }
+        }
+
+        private bool _pr_l;
+        public bool PR_L
+        {
+            get => _pr_l;
+            set
+            {
+                _pr_l = value;
+                NotifyOfPropertyChange(() => PR_L);
+            }
+        }
+
+        private bool _pr_h;
+        public bool PR_H
+        {
+            get => _pr_h;
+            set
+            {
+                _pr_h = value;
+                NotifyOfPropertyChange(() => PR_H);
+            }
+        }
 
         // User Interaction (UI)
-        public bool UI_N { get; set; }
-        public bool UI_R { get; set; }
+        private bool _ui_n;
+        public bool UI_N
+        {
+            get => _ui_n;
+            set
+            {
+                _ui_n = value;
+                NotifyOfPropertyChange(() => UI_N);
+            }
+        }
 
+        private bool _ui_r;
+        public bool UI_R
+        {
+            get => _ui_r;
+            set
+            {
+                _ui_r = value;
+                NotifyOfPropertyChange(() => UI_R);
+            }
+        }
+        
         // Scope (S)
-        public bool S_U { get; set; }
-        public bool S_C { get; set; }
+        private bool _s_u;
+        public bool S_U
+        {
+            get => _s_u;
+            set
+            {
+                _s_u = value;
+                NotifyOfPropertyChange(() => S_U);
+            }
+        }
 
+        private bool _s_c;
+        public bool S_C
+        {
+            get => _s_c;
+            set
+            {
+                _s_c = value;
+                NotifyOfPropertyChange(() => S_C);
+            }
+        }
+        
         // Confidentiality Impact (C)
-        public bool C_N { get; set; }
-        public bool C_L { get; set; }
-        public bool C_H { get; set; }
+        private bool _c_n;
+        public bool C_N
+        {
+            get => _c_n;
+            set
+            {
+                _c_n = value;
+                NotifyOfPropertyChange(() => C_N);
+            }
+        }
 
-        // Confidentiality Impact (C)
-        public bool I_N { get; set; }
-        public bool I_L { get; set; }
-        public bool I_H { get; set; }
+        private bool _c_l;
+        public bool C_L
+        {
+            get => _c_l;
+            set
+            {
+                _c_l = value;
+                NotifyOfPropertyChange(() => C_L);
+            }
+        }
+
+        private bool _c_h;
+        public bool C_H
+        {
+            get => _c_h;
+            set
+            {
+                _c_h = value;
+                NotifyOfPropertyChange(() => C_H);
+            }
+        }
+
+        // Integrity Impact (I)
+        private bool _i_n;
+        public bool I_N
+        {
+            get => _i_n;
+            set
+            {
+                _i_n = value;
+                NotifyOfPropertyChange(() => I_N);
+            }
+        }
+
+        private bool _i_l;
+        public bool I_L
+        {
+            get => _i_l;
+            set
+            {
+                _i_l = value;
+                NotifyOfPropertyChange(() => I_L);
+            }
+        }
+
+        private bool _i_h;
+        public bool I_H
+        {
+            get => _i_h;
+            set
+            {
+                _i_h = value;
+                NotifyOfPropertyChange(() => I_H);
+            }
+        }
 
         // Availability Impact (A)
-        public bool A_N { get; set; }
-        public bool A_L { get; set; }
-        public bool A_H { get; set; }
+        private bool _a_n;
+        public bool A_N
+        {
+            get => _a_n;
+            set
+            {
+                _a_n = value;
+                NotifyOfPropertyChange(() => A_N);
+            }
+        }
+
+        private bool _a_l;
+        public bool A_L
+        {
+            get => _a_l;
+            set
+            {
+                _a_l = value;
+                NotifyOfPropertyChange(() => A_L);
+            }
+        }
+
+        private bool _a_h;
+        public bool A_H
+        {
+            get => _a_h;
+            set
+            {
+                _a_h = value;
+                NotifyOfPropertyChange(() => A_H);
+            }
+        }
         #endregion
 
         #region Temporal Score Metrics
-        // Remediation Level (RL)
-        public bool E_X { get; set; } = true;
-        public bool E_U { get; set; }
-        public bool E_P { get; set; }
-        public bool E_F { get; set; }
-        public bool E_H { get; set; }
-
+        
         // Exploitability (E)
-        public bool RL_X { get; set; } = true;
-        public bool RL_O { get; set; }
-        public bool RL_T { get; set; }
-        public bool RL_W { get; set; }
-        public bool RL_U { get; set; }
+        private bool _e_x;
+        public bool E_X
+        {
+            get => _e_x;
+            set
+            {
+                _e_x = value;
+                NotifyOfPropertyChange(() => E_X);
+            }
+        }
+
+        private bool _e_u;
+        public bool E_U
+        {
+            get => _e_u;
+            set
+            {
+                _e_u = value;
+                NotifyOfPropertyChange(() => E_U);
+            }
+        }
+
+        private bool _e_p;
+        public bool E_P
+        {
+            get => _e_p;
+            set
+            {
+                _e_p = value;
+                NotifyOfPropertyChange(() => E_P);
+            }
+        }
+
+        private bool _e_f;
+        public bool E_F
+        {
+            get => _e_f;
+            set
+            {
+                _e_f = value;
+                NotifyOfPropertyChange(() => E_F);
+            }
+        }
+
+        private bool _e_h;
+        public bool E_H
+        {
+            get => _e_h;
+            set
+            {
+                _e_h = value;
+                NotifyOfPropertyChange(() => E_H);
+            }
+        }
+
+        // Remediation Level (RL)
+        private bool _rl_x;
+        public bool RL_X
+        {
+            get => _rl_x;
+            set
+            {
+                _rl_x = value;
+                NotifyOfPropertyChange(() => RL_X);
+            }
+        }
+
+        private bool _rl_o;
+        public bool RL_O
+        {
+            get => _rl_o;
+            set
+            {
+                _rl_o = value;
+                NotifyOfPropertyChange(() => RL_O);
+            }
+        }
+
+        private bool _rl_t;
+        public bool RL_T
+        {
+            get => _rl_t;
+            set
+            {
+                _rl_t = value;
+                NotifyOfPropertyChange(() => RL_T);
+            }
+        }
+
+        private bool _rl_w;
+        public bool RL_W
+        {
+            get => _rl_w;
+            set
+            {
+                _rl_w = value;
+                NotifyOfPropertyChange(() => RL_W);
+            }
+        }
+
+        private bool _rl_u;
+        public bool RL_U
+        {
+            get => _rl_u;
+            set
+            {
+                _rl_u = value;
+                NotifyOfPropertyChange(() => RL_U);
+            }
+        }
 
         // Report Confidence (RC)
-        public bool RC_X { get; set; } = true;
-        public bool RC_U { get; set; }
-        public bool RC_R { get; set; }
-        public bool RC_C { get; set; }
+        private bool _rc_x;
+        public bool RC_X
+        {
+            get => _rc_x;
+            set
+            {
+                _rc_x = value;
+                NotifyOfPropertyChange(() => RC_X);
+            }
+        }
 
+        private bool _rc_u;
+        public bool RC_U
+        {
+            get => _rc_u;
+            set
+            {
+                _rc_u = value;
+                NotifyOfPropertyChange(() => RC_U);
+            }
+        }
+
+        private bool _rc_r;
+        public bool RC_R
+        {
+            get => _rc_r;
+            set
+            {
+                _rc_r = value;
+                NotifyOfPropertyChange(() => RC_R);
+            }
+        }
+
+        private bool _rc_c;
+        public bool RC_C
+        {
+            get => _rc_c;
+            set
+            {
+                _rc_c = value;
+                NotifyOfPropertyChange(() => RC_C);
+            }
+        }
         #endregion
 
         #region Environmental Score Metrics
         // Attack Vector (AV)
-        public bool MAV_X { get; set; } = true;
-        public bool MAV_N { get; set; }
-        public bool MAV_A { get; set; }
-        public bool MAV_L { get; set; }
-        public bool MAV_P { get; set; }
+        private bool _mav_x;
+        public bool MAV_X
+        {
+            get => _mav_x;
+            set
+            {
+                _mav_x = value;
+                NotifyOfPropertyChange(() => MAV_X);
+            }
+        }
 
-        // Attack Complexity (AC)
-        public bool MAC_X { get; set; } = true;
-        public bool MAC_L { get; set; }
-        public bool MAC_H { get; set; }
+        private bool _mav_n;
+        public bool MAV_N
+        {
+            get => _mav_n;
+            set
+            {
+                _mav_n = value;
+                NotifyOfPropertyChange(() => MAV_N);
+            }
+        }
+
+        private bool _mav_a;
+        public bool MAV_A
+        {
+            get => _mav_a;
+            set
+            {
+                _mav_a = value;
+                NotifyOfPropertyChange(() => MAV_A);
+            }
+        }
+
+        private bool _mav_l;
+        public bool MAV_L
+        {
+            get => _mav_l;
+            set
+            {
+                _mav_l = value;
+                NotifyOfPropertyChange(() => MAV_L);
+            }
+        }
+
+        private bool _mav_p;
+        public bool MAV_P
+        {
+            get => _mav_p;
+            set
+            {
+                _mav_p = value;
+                NotifyOfPropertyChange(() => MAV_P);
+            }
+        }
+
+        // Attack Complexity(AC)
+        private bool _mac_x;
+        public bool MAC_X
+        {
+            get => _mac_x;
+            set
+            {
+                _mac_x = value;
+                NotifyOfPropertyChange(() => MAC_X);
+            }
+        }
+
+        private bool _mac_l;
+        public bool MAC_L
+        {
+            get => _mac_l;
+            set
+            {
+                _mac_l = value;
+                NotifyOfPropertyChange(() => MAC_L);
+            }
+        }
+
+        private bool _mac_h;
+        public bool MAC_H
+        {
+            get => _mac_h;
+            set
+            {
+                _mac_h = value;
+                NotifyOfPropertyChange(() => MAC_H);
+            }
+        }
 
         // Privileges Required (PR)
-        public bool MPR_X { get; set; } = true;
-        public bool MPR_N { get; set; }
-        public bool MPR_L { get; set; }
-        public bool MPR_H { get; set; }
+        private bool _mpr_x;
+        public bool MPR_X
+        {
+            get => _mpr_x;
+            set
+            {
+                _mpr_x = value;
+                NotifyOfPropertyChange(() => MPR_X);
+            }
+        }
+
+        private bool _mpr_n;
+        public bool MPR_N
+        {
+            get => _mpr_n;
+            set
+            {
+                _mpr_n = value;
+                NotifyOfPropertyChange(() => MPR_N);
+            }
+        }
+
+        private bool _mpr_l;
+        public bool MPR_L
+        {
+            get => _mpr_l;
+            set
+            {
+                _mpr_l = value;
+                NotifyOfPropertyChange(() => MPR_L);
+            }
+        }
+
+        private bool _mpr_h;
+        public bool MPR_H
+        {
+            get => _mpr_h;
+            set
+            {
+                _mpr_h = value;
+                NotifyOfPropertyChange(() => MPR_H);
+            }
+        }
 
         // User Interaction (UI)
-        public bool MUI_X { get; set; } = true;
-        public bool MUI_N { get; set; }
-        public bool MUI_R { get; set; }
+        private bool _mui_x;
+        public bool MUI_X
+        {
+            get => _mui_x;
+            set
+            {
+                _mui_x = value;
+                NotifyOfPropertyChange(() => MUI_X);
+            }
+        }
+
+        private bool _mui_n;
+        public bool MUI_N
+        {
+            get => _mui_n;
+            set
+            {
+                _mui_n = value;
+                NotifyOfPropertyChange(() => MUI_N);
+            }
+        }
+
+        private bool _mui_r;
+        public bool MUI_R
+        {
+            get => _mui_r;
+            set
+            {
+                _mui_r = value;
+                NotifyOfPropertyChange(() => MUI_R);
+            }
+        }
 
         // Scope (S)
-        public bool MS_X { get; set; } = true;
-        public bool MS_U { get; set; }
-        public bool MS_C { get; set; }
+        private bool _ms_x;
+        public bool MS_X
+        {
+            get => _ms_x;
+            set
+            {
+                _ms_x = value;
+                NotifyOfPropertyChange(() => MS_X);
+            }
+        }
+
+        private bool _ms_u;
+        public bool MS_U
+        {
+            get => _ms_u;
+            set
+            {
+                _ms_u = value;
+                NotifyOfPropertyChange(() => MS_U);
+            }
+        }
 
         // Impact Metrics
         // Confidentiality Impact(C)
-        public bool MC_X { get; set; } = true;
-        public bool MC_N { get; set; }
-        public bool MC_L { get; set; }
-        public bool MC_H { get; set; }
+        private bool _ms_c;
+        public bool MS_C
+        {
+            get => _ms_c;
+            set
+            {
+                _ms_c = value;
+                NotifyOfPropertyChange(() => MS_C);
+            }
+        }
 
+        private bool _mc_x;
+        public bool MC_X
+        {
+            get => _mc_x;
+            set
+            {
+                _mc_x = value;
+                NotifyOfPropertyChange(() => MC_X);
+            }
+        }
+
+        private bool _mc_n;
+        public bool MC_N
+        {
+            get => _mc_n;
+            set
+            {
+                _mc_n = value;
+                NotifyOfPropertyChange(() => MC_N);
+            }
+        }
+
+        private bool _mc_l;
+        public bool MC_L
+        {
+            get => _mc_l;
+            set
+            {
+                _mc_l = value;
+                NotifyOfPropertyChange(() => MC_L);
+            }
+        }
+
+        private bool _mc_h;
+        public bool MC_H
+        {
+            get => _mc_h;
+            set
+            {
+                _mc_h = value;
+                NotifyOfPropertyChange(() => MC_H);
+            }
+        }
+        
         // Integrity Impact (I)
-        public bool MI_X { get; set; } = true;
-        public bool MI_N { get; set; }
-        public bool MI_L { get; set; }
-        public bool MI_H { get; set; }
+        private bool _mi_x;
+        public bool MI_X
+        {
+            get => _mi_x;
+            set
+            {
+                _mi_x = value;
+                NotifyOfPropertyChange(() => MI_X);
+            }
+        }
 
-        // Availability Impact (A)
-        public bool MA_X { get; set; } = true;
-        public bool MA_N { get; set; }
-        public bool MA_L { get; set; }
-        public bool MA_H { get; set; }
+        private bool _mi_n;
+        public bool MI_N
+        {
+            get => _mi_n;
+            set
+            {
+                _mi_n = value;
+                NotifyOfPropertyChange(() => MI_N);
+            }
+        }
+
+        private bool _mi_l;
+        public bool MI_L
+        {
+            get => _mi_l;
+            set
+            {
+                _mi_l = value;
+                NotifyOfPropertyChange(() => MI_L);
+            }
+        }
+
+        private bool _mi_h;
+        public bool MI_H
+        {
+            get => _mi_h;
+            set
+            {
+                _mi_h = value;
+                NotifyOfPropertyChange(() => MI_H);
+            }
+        }
+
+        // Availability Impact(A)
+        private bool _ma_x;
+        public bool MA_X
+        {
+            get => _ma_x;
+            set
+            {
+                _ma_x = value;
+                NotifyOfPropertyChange(() => MA_X);
+            }
+        }
+
+        private bool _ma_n;
+        public bool MA_N
+        {
+            get => _ma_n;
+            set
+            {
+                _ma_n = value;
+                NotifyOfPropertyChange(() => MA_N);
+            }
+        }
+
+        private bool _ma_l;
+        public bool MA_L
+        {
+            get => _ma_l;
+            set
+            {
+                _ma_l = value;
+                NotifyOfPropertyChange(() => MA_L);
+            }
+        }
+
+        private bool _ma_h;
+        public bool MA_H
+        {
+            get => _ma_h;
+            set
+            {
+                _ma_h = value;
+                NotifyOfPropertyChange(() => MA_H);
+            }
+        }
 
         // Impact Subscore Modifiers
-        // Confidentiality Requirement (CR)
-        public bool CR_X { get; set; } = true;
-        public bool CR_L { get; set; }
-        public bool CR_M { get; set; }
-        public bool CR_H { get; set; }
+        // Confidentiality Requirement(CR)
+        private bool _cr_x;
+        public bool CR_X
+        {
+            get => _cr_x;
+            set
+            {
+                _cr_x = value;
+                NotifyOfPropertyChange(() => CR_X);
+            }
+        }
+
+        private bool _cr_l;
+        public bool CR_L
+        {
+            get => _cr_l;
+            set
+            {
+                _cr_l = value;
+                NotifyOfPropertyChange(() => CR_L);
+            }
+        }
+
+        private bool _cr_m;
+        public bool CR_M
+        {
+            get => _cr_m;
+            set
+            {
+                _cr_m = value;
+                NotifyOfPropertyChange(() => CR_M);
+            }
+        }
+
+        private bool _cr_h;
+        public bool CR_H
+        {
+            get => _cr_h;
+            set
+            {
+                _cr_h = value;
+                NotifyOfPropertyChange(() => CR_H);
+            }
+        }
 
         // Integrity Requirement (IR)
-        public bool IR_X { get; set; } = true;
-        public bool IR_L { get; set; }
-        public bool IR_M { get; set; }
-        public bool IR_H { get; set; }
+        private bool _ir_x;
+        public bool IR_X
+        {
+            get => _ir_x;
+            set
+            {
+                _ir_x = value;
+                NotifyOfPropertyChange(() => IR_X);
+            }
+        }
 
-        // Integrity Requirement (IR)
-        public bool AR_X { get; set; } = true;
-        public bool AR_L { get; set; }
-        public bool AR_M { get; set; }
-        public bool AR_H { get; set; }
+        private bool _ir_l;
+        public bool IR_L
+        {
+            get => _ir_l;
+            set
+            {
+                _ir_l = value;
+                NotifyOfPropertyChange(() => IR_L);
+            }
+        }
+
+        private bool _ir_m;
+        public bool IR_M
+        {
+            get => _ir_m;
+            set
+            {
+                _ir_m = value;
+                NotifyOfPropertyChange(() => IR_M);
+            }
+        }
+
+        private bool _ir_h;
+        public bool IR_H
+        {
+            get => _ir_h;
+            set
+            {
+                _ir_h = value;
+                NotifyOfPropertyChange(() => IR_H);
+            }
+        }
+
+        // Availability Requirement (AR)
+        private bool _ar_x;
+        public bool AR_X
+        {
+            get => _ar_x;
+            set
+            {
+                _ar_x = value;
+                NotifyOfPropertyChange(() => AR_X);
+            }
+        }
+
+        private bool _ar_l;
+        public bool AR_L
+        {
+            get => _ar_l;
+            set
+            {
+                _ar_l = value;
+                NotifyOfPropertyChange(() => AR_L);
+            }
+        }
+
+        private bool _ar_m;
+        public bool AR_M
+        {
+            get => _ar_m;
+            set
+            {
+                _ar_m = value;
+                NotifyOfPropertyChange(() => AR_M);
+            }
+        }
+
+        private bool _ar_h;
+        public bool AR_H
+        {
+            get => _ar_h;
+            set
+            {
+                _ar_h = value;
+                NotifyOfPropertyChange(() => AR_H);
+            }
+        }
         #endregion
 
-        #endregion
-
+        #endregion BOOLEAN RADIO PROPERTIES
 
         private double _baseScore;
         private double _impactSubScore;
@@ -686,12 +1446,10 @@ namespace RiskCalculator.ViewModels
 
             #endregion
         }
-
         public double RaundUp(double d)
         {
             return Math.Ceiling(d * 10) / 10;
         }
-
         public string ConstructVectorString(Dictionary<string, string> idenifiers)
         {
             string vector;
@@ -821,12 +1579,17 @@ namespace RiskCalculator.ViewModels
         {
             string vector = selectedVulnerability.MetricV3.cvssV3.vectorString;
             string cvssVersion = vector.Substring(0, vector.IndexOf('/'));
-         
+
+            // Для начала скинем идентификаторы метрик к дефолтному состоянию.
+            Metrics.MetricsIdentifiers = new Dictionary<string, string>(Metrics.ConstMetricsIdentifiers);
+
+            // Получим идентификаторы метрик из вектора.
             foreach (var i in ParseVectorString(vector, cvssVersion))
             {
                 SetMetricKey(i.Key, i.Value);
             }
 
+            // Инициализируем численное значения метрик в соответсвие с их строковыми идентификаторами.
             foreach (var i in Metrics.MetricsIdentifiers)
             {
                 InitializeMetrics(i.Key, i.Value);
@@ -834,18 +1597,17 @@ namespace RiskCalculator.ViewModels
 
 
             // Нужно установить интерфейс калькулятора (radio-buttons) в значение идентификаторов выбранной уязвимости.
+            InitializeRadioButtons(Metrics.MetricsIdentifiers, true);
 
-            InitializeRadioButtons(Metrics.MetricsIdentifiers);
-
-
+            // Расчитаем оценки уязвимости.
             CalculateCvss3(Metrics.MetricsWeight);
         }
 
-        private void InitializeRadioButtons(Dictionary<string, string> identifiers)
+        private void InitializeRadioButtons(Dictionary<string, string> identifiers, bool flag)
         {
-            foreach (var i in identifiers)
+            foreach (var i in identifiers.ToList())
             {
-                this.GetType().GetProperty($"{i.Key}_{i.Value}").SetValue(this, true);                
+                this.GetType().GetProperty($"{i.Key}_{i.Value}").SetValue(this, flag);                
             }           
         }
     }
