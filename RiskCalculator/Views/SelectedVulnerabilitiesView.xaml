@@ -21,8 +21,8 @@
         <TextBlock Grid.Row="0" Text="Список вразливостей" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" />
 
         <!--SELECTED VULNERABILITIES LIST-->
-        
-        <ListView x:Name="VulnerabilitiesList" Grid.Row="1">
+
+        <ListView x:Name="VulnerabilitiesList" Grid.Row="1" SelectedItem="{Binding Path=SelectedVulnerability, Mode=OneWayToSource}">
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
                     <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Vuln ID" Width="115"/>
@@ -42,10 +42,10 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
             <Button x:Name="Edit" Height="35"  Width="120" Style="{StaticResource MaterialDesignOutlinedButton}" 
-                   Content="Редагувати" ToolTip="MaterialDesignOutlinedButton" VerticalAlignment="Center">
+                   Content="Редагувати" ToolTip="Редагувати обрану вразливість" VerticalAlignment="Center">
             </Button>
             <Button x:Name="Delete" Height="35"  Width="120" Margin="25 0 0 0" Style="{StaticResource MaterialDesignOutlinedButton}" 
-                   Content="Видалити" ToolTip="MaterialDesignOutlinedButton" VerticalAlignment="Center" 
+                   Content="Видалити" ToolTip="Видалити обрану вразливість" VerticalAlignment="Center" 
                     Foreground="Red" BorderBrush="Red">
             </Button>
         </StackPanel>
