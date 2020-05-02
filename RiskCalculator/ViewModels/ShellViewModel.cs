@@ -12,18 +12,9 @@ namespace RiskCalculator.ViewModels
 {
     class MenuItem
     {
-        public int Index { get; set; }
         public string Title { get; set; }
         public string Kind { get; set; }
 
-        public object ViewModel { get; set; }
-
-        public BindableCollection<SubItem> SubItems { get; set; }
-    }
-
-    class SubItem
-    {
-        public string Title { get; set; }
         public object ViewModel { get; set; }
     }
 
@@ -31,45 +22,25 @@ namespace RiskCalculator.ViewModels
     {
         public ShellViewModel()
         {
-            SubMenuItems.Add(new SubItem() { Title = "Сканувати систему" });
-            SubMenuItems.Add(new SubItem() { Title = "Додати СVE з NVD" });
-
-
             // Initialaze menu items.
-            MenuItems.Add(new MenuItem
-            {
-                Index = 0,
-                Title = "Головна",
-                Kind = "Home",
-                ViewModel = new HomePageViewModel(),
-                SubItems = SubMenuItems
-            });
 
-            MenuItems.Add(new MenuItem { Index = 1, Title = "Список вразливостей", Kind = "ViewList" });
-            MenuItems.Add(new MenuItem { Index = 2, Title = "CVSS калькулятор", Kind = "Calculator" });
-            MenuItems.Add(new MenuItem { Index = 3, Title = "Метрики", Kind = "ChartBar" });
-            MenuItems.Add(new MenuItem { Index = 4, Title = "Оцінювання ризиків", Kind = "Security" });
-            MenuItems.Add(new MenuItem { Index = 5, Title = "Результати оцінки", Kind = "Newspaper" });
+            MenuItems.Add(new MenuItem { Title = "Додати СVE", Kind = "AddCircle", ViewModel = new AddCveViewModel(VulnerabilitiesList) });
+            MenuItems.Add(new MenuItem { Title = "Головна", Kind = "Home", ViewModel = new HomePageViewModel() });
+
+            MenuItems.Add(new MenuItem { Title = "Сканування системи", Kind = "ShieldSearch" });
+            
+            MenuItems.Add(new MenuItem { Title = "Список вразливостей", Kind = "ViewList", ViewModel = new SelectedVulnerabilitiesViewModel(VulnerabilitiesList) });
+            MenuItems.Add(new MenuItem { Title = "CVSS калькулятор", Kind = "Calculator", ViewModel = new CalculatorViewModel(VulnerabilitiesList) });
+            MenuItems.Add(new MenuItem { Title = "Метрики", Kind = "ChartBar" });
+            MenuItems.Add(new MenuItem { Title = "Оцінювання ризиків", Kind = "Security" });
+            MenuItems.Add(new MenuItem { Title = "Результати оцінки", Kind = "Newspaper" });
         }
 
         private MenuItem _selectedMenuItem;
-        private SubItem _selectedSubMenuItem;
 
         public BindableCollection<MenuItem> _menuItems = new BindableCollection<MenuItem>();
-        public BindableCollection<SubItem> _subMenuItems = new BindableCollection<SubItem>();
 
-
-        public BindableCollection<SubItem> SubMenuItems
-        {
-            get
-            {
-                return _subMenuItems;
-            }
-            set
-            {
-                _subMenuItems = value;
-            }
-        }
+        public BindableCollection<VulnerabilityModel> VulnerabilitiesList = new BindableCollection<VulnerabilityModel>();
 
         public BindableCollection<MenuItem> MenuItems
         {
@@ -91,19 +62,7 @@ namespace RiskCalculator.ViewModels
                 _selectedMenuItem = value;
                 NotifyOfPropertyChange(() => SelectedMunuItem);
 
-                if(value != null && SelectedMunuItem.ViewModel != null)
-                    SwithToView(SelectedMunuItem.ViewModel);
-            }
-        }
-        public SubItem SelectedSubMenuItem
-        {
-            get { return _selectedSubMenuItem; }
-            set
-            {
-                _selectedSubMenuItem = value;
-                NotifyOfPropertyChange(() => SelectedSubMenuItem);
-
-                if (value != null && SelectedMunuItem.ViewModel != null)
+                if(SelectedMunuItem.ViewModel != null)
                     SwithToView(SelectedMunuItem.ViewModel);
             }
         }

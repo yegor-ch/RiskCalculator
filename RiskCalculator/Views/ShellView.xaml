@@ -9,8 +9,8 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         
-        mc:Ignorable="d" Height="700" Width="1000" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
-        
+        mc:Ignorable="d" Height="700" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
+        FontFamily="Champagne &amp; Limousines"
         >
     <Grid Background="#fff" cal:Message.Attach="[Event MouseDown] = [Action MouseDrag()]">
 
@@ -19,7 +19,7 @@
             <!--2980b9 FF0069C0-->
         </Grid>
         <Grid Margin="0 12">
-            <TextBlock Text="Risck Calculator" VerticalAlignment="Top" FontFamily="Champagne &amp; Limousines" FontSize="16" Foreground="Gray" Margin="560 0 0 0"/>
+            <TextBlock Text="РИЗИК КАЛЬКУЛЯТОР" VerticalAlignment="Top" FontFamily="Champagne &amp; Limousines" FontSize="16" Foreground="Gray" Margin="600 0 0 0"/>
             <Button x:Name="CloseProgram" Height="25" Width="25" HorizontalAlignment="Right" VerticalAlignment="Top" Padding="0" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Gray" RenderTransformOrigin="2.52,0.6" Margin="3 0">
                 <materialDesign:PackIcon Kind="WindowClose" Width="20" Height="20"/>
@@ -27,7 +27,7 @@
         </Grid>
         
         <!--ACTIVE PAGE SECTION-->      
-        <Grid Margin="274,0,0,0" Height="560" VerticalAlignment="Bottom">
+        <Grid Margin="320,0,0,0" Height="660" VerticalAlignment="Center">
             <ContentControl x:Name="ActiveItem" />
         </Grid>
         
@@ -35,30 +35,13 @@
         <Grid HorizontalAlignment="Left" Width="305" Background="#FF222222">
             <!--Cursor-->
             <materialDesign:TransitioningContent x:Name="TrainsitionigContentSlide" OpeningEffect="{materialDesign:TransitionEffect SlideInFromLeft, Duration=0:0:0.2}">
-                <Grid x:Name="GridCursor" Margin="0 100 0 0" Background="#FF0069C0" Width="8" HorizontalAlignment="Left" Height="63" VerticalAlignment="Top"/>
+                <Grid x:Name="GridCursor" Margin="0 100 0 0" Background="#FF0069C0" Width="8" HorizontalAlignment="Left" Height="60" VerticalAlignment="Top"/>
             </materialDesign:TransitioningContent>
-
+        
             <!--Menu-->
-            <ListView x:Name="MenuItems" Margin="0 100" SelectionChanged="ListViewMenu_SelectionChanged" SelectedItem="{Binding Path=SelectedMunuItem, Mode=OneWayToSource}" Foreground="LightGray" 
-                      FontFamily="Champagne &amp; Limousines" FontSize="16" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel VerticalAlignment="Center">
-                            <local:UserMenu/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
-                        <!--<Setter Property="Height" Value="60" />-->
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
-           
-            <!--Menu-->
-            <!--<ListView x:Name="MenuItems" SelectedItem="{Binding Path=SelectedMunuItem, Mode=OneWayToSource}" Margin="0 100" Foreground="LightGray" FontFamily="Champagne &amp; Limousines" FontSize="16" SelectedIndex="0"
+            <ListView x:Name="MenuItems" SelectedItem="{Binding Path=SelectedMunuItem, Mode=OneWayToSource}" Margin="0 100 0 20" Foreground="LightGray" FontFamily="Champagne &amp; Limousines" FontSize="16" SelectedIndex="0"
                       SelectionChanged="ListViewMenu_SelectionChanged">
-                --><!--Some styles--><!--
+                <!--Some styles-->
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
                         <Setter Property="Height" Value="60" />
@@ -73,7 +56,7 @@
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>-->
+            </ListView>
         </Grid>
     </Grid>
 </Window>

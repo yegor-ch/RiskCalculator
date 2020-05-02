@@ -1,0 +1,110 @@
+﻿<UserControl x:Class="RiskCalculator.Views.AddCveView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:local="clr-namespace:RiskCalculator.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="660" d:DesignWidth="800"
+             FontFamily="Champagne &amp; Limousines">
+
+    <UserControl.Resources>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid>
+            <!--Grid definition-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="240"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="116"/>
+                <RowDefinition Height="72"/>
+                <RowDefinition Height="420"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!--SEARCH PANEL-->
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="20 10">
+                <TextBlock Text="Пошук СVE в NVD" FontSize="20" Foreground="Gray"/>
+                <TextBox x:Name="SearchParams" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Margin="0 15" VerticalAlignment="Top" Height="40" AcceptsReturn="True"
+                    materialDesign:HintAssist.Hint="Keyword" ToolTip="Введіть дані для пошуку" materialDesign:ValidationAssist.UsePopup="True">
+                    <TextBox.Text>
+                        <Binding Path="SearchParams">
+                            <Binding.ValidationRules>
+                                <ExceptionValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </StackPanel>
+
+            <!--Buttons-->
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                <Button x:Name="SearchRequest" Height="35"  Width="100" Style="{StaticResource MaterialDesignOutlinedButton}" 
+                   Content="Пошук" ToolTip="MaterialDesignOutlinedButton" Margin="15,50,0,0" VerticalAlignment="Top">
+                </Button>
+                <Button x:Name="ClearSearchParams" Height="35"  Width="100" Style="{StaticResource MaterialDesignOutlinedButton}" 
+                   Content="Очистити" ToolTip="MaterialDesignOutlinedButton" Margin="15,50,0,0" VerticalAlignment="Top" Foreground="#707070" BorderBrush="#707070"  />
+            </StackPanel>
+
+            <!--Toogle buttons-->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Шукати за період:" FontSize="18" Foreground="Gray" Margin="20 0"/>
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="20 0">
+                <RadioButton Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="За весь час" IsChecked="True"/>
+                <RadioButton Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="3 місяці" Margin="30 0" />
+                <RadioButton Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="3 роки" />
+            </StackPanel>
+            <!--cal:Message.Attach="[Event SelectionChanged] = [Action NewVulnerabilityAdded($e)]"-->
+            
+            <!--SEARCH RESULT SECTION-->
+            <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="20 0">
+                <TextBlock  Text="Результати пошуку:" Foreground="Gray" FontSize="18"/>
+                <ListView x:Name="SearchResultList" Margin="0 30 0 0">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <cal:ActionMessage MethodName="NewVulnerabilityAdded">
+                                <cal:Parameter Value="$eventArgs"/>
+                            </cal:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="False">
+                            <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Vuln ID" Width="115"/>
+                            <GridViewColumn Header="Загальна інформація" Width="440" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding Description}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Severity}" Header="CVSS рівень" Width="160" />
+                            <GridViewColumn Width="auto" Header="Додати">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ToggleButton Content="+" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" ToolTip="Додати до списку" 
+                                          Style="{StaticResource MaterialDesignActionAccentToggleButton}" Background="#79b700"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            
+            <!--PROGRESS BAR-->
+            <ProgressBar Grid.Row="3" Grid.ColumnSpan="3" Height="40" Width="40"  Style="{StaticResource MaterialDesignCircularProgressBar}" 
+                         x:Name="ProgressValue" Value="{Binding Path=ProgressValue}" IsIndeterminate="{Binding Path=IsIndeterminate}" Maximum="{Binding Path=Maximum}" Minimum="0" />
+
+            <!--SNACK BAR-->
+            <materialDesign:Snackbar Grid.ColumnSpan="3" Grid.Row="4" MessageQueue="{Binding MessageQueue}" Height="60">
+                <!--<materialDesign:SnackbarMessage Content="{Binding AddedVulCount}" />-->
+            </materialDesign:Snackbar>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RiskCalculator.ViewModels
 {
-    class HomePageViewModel : Screen, IViewModel
+    class HomePageViewModel : Screen
     {
     }
 }
