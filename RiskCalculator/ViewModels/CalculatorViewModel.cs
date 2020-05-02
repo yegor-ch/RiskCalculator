@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using LiveCharts;
+using LiveCharts.Wpf;
+using LiveCharts.Defaults;
 
 namespace RiskCalculator.ViewModels
 {
@@ -1091,6 +1094,9 @@ namespace RiskCalculator.ViewModels
         private double _envModifiedImpactSubScore;
         private string _cvssVectorString;
         private VulnerabilityModel _selectedVulnerability;
+        private SeriesCollection _metricsSeriesCollection;
+        private Func<double, string> _formatter;
+        private string[] _labels;
 
         public double ExploitabilityCoefficient { get; set; } = 8.22;
         public double ScopeCoefficient { get; set; } = 1.08;
@@ -1178,6 +1184,33 @@ namespace RiskCalculator.ViewModels
         }
 
         public bool IsCleanFormClicked { get; set; }
+        public SeriesCollection MetricsSeriesCollection 
+        {
+            get => _metricsSeriesCollection; 
+            set 
+            { 
+                _metricsSeriesCollection = value;
+                NotifyOfPropertyChange(() => MetricsSeriesCollection);
+            } 
+        }
+        public Func<double, string> Formatter
+        {
+            get => _formatter;
+            set
+            {
+                _formatter = value;
+                NotifyOfPropertyChange(() => Formatter);
+            }
+        }
+        public string[] Labels
+        {
+            get => _labels;
+            set
+            {
+                _labels = value;
+                NotifyOfPropertyChange(() => Labels);
+            }
+        }
 
         public CalculatorViewModel(BindableCollection<VulnerabilityModel> Vulnerabilities)
         {
@@ -1208,6 +1241,8 @@ namespace RiskCalculator.ViewModels
             CvssVectorString = ConstructVectorString(Metrics.MetricsIdentifiers);
 
             CalculateCvss3(Metrics.MetricsWeight);
+
+            CreateCharts();
         }
 
         public void SetMetricKey(string keyName, string value)
@@ -1452,6 +1487,10 @@ namespace RiskCalculator.ViewModels
             }
 
             #endregion
+
+            ImpactSubScore = Math.Round(ImpactSubScore, 1);
+            ExploitabalitySubScore = Math.Round(ExploitabalitySubScore, 1);
+            EnvModifiedImpactSubScore = Math.Round(EnvModifiedImpactSubScore, 1);
         }
         public double RaundUp(double d)
         {
@@ -1608,6 +1647,8 @@ namespace RiskCalculator.ViewModels
 
             // Расчитаем оценки уязвимости.
             CalculateCvss3(Metrics.MetricsWeight);
+
+            CreateCharts();
         }
 
         private void InitializeRadioButtons(Dictionary<string, string> identifiers, bool flag)
@@ -1642,6 +1683,31 @@ namespace RiskCalculator.ViewModels
             InitializeRadioButtons(Metrics.MetricsIdentifiers, true);
 
             IsCleanFormClicked = false;
+        }
+
+
+        public void CreateCharts()
+        {
+            MetricsSeriesCollection = new SeriesCollection();
+            
+            MetricsSeriesCollection.Add(new ColumnSeries {
+                Title = "Base score",
+                Values = new ChartValues<ObservableValue> { new ObservableValue(BaseScore) }
+            });
+
+            MetricsSeriesCollection.Add(new ColumnSeries
+            {
+                Title = "Temporal score",
+                Values = new ChartValues<ObservableValue> { new ObservableValue(TemporalScore) },
+            });
+
+            MetricsSeriesCollection.Add(new ColumnSeries
+            {
+                Title = "Environmental score ",
+                Values = new ChartValues<ObservableValue> { new ObservableValue(EnvScore) },
+            });
+
+            Formatter = value => value.ToString();
         }
     }
 }

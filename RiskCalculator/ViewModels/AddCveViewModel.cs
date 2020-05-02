@@ -16,7 +16,7 @@ namespace RiskCalculator.ViewModels
 {
     class AddCveViewModel : Screen
     {
-        private string _searchParams = "adobe";
+        private string _searchParams = "CVE-2019-8248";
         public string SearchParams 
         { 
             get { return _searchParams; } 
