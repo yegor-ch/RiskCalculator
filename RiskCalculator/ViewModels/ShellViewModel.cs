@@ -31,7 +31,7 @@ namespace RiskCalculator.ViewModels
             
             MenuItems.Add(new MenuItem { Title = "Список вразливостей", Kind = "ViewList", ViewModel = new SelectedVulnerabilitiesViewModel(VulnerabilitiesList) });
             MenuItems.Add(new MenuItem { Title = "CVSS калькулятор", Kind = "Calculator", ViewModel = new CalculatorViewModel(VulnerabilitiesList) });
-            MenuItems.Add(new MenuItem { Title = "Метрики", Kind = "ChartBar" });
+            MenuItems.Add(new MenuItem { Title = "Метрики", Kind = "ChartBar", ViewModel = new TrapezeViewModel() });
             MenuItems.Add(new MenuItem { Title = "Оцінювання ризиків", Kind = "Security" });
             MenuItems.Add(new MenuItem { Title = "Результати оцінки", Kind = "Newspaper" });
         }
@@ -73,7 +73,14 @@ namespace RiskCalculator.ViewModels
 
         public void MouseDrag()
         {
-            Window.GetWindow((Window)this.GetView()).DragMove();
+            try
+            {
+                Window.GetWindow((Window)this.GetView()).DragMove();
+            }
+            catch
+            {
+                //...
+            }
         }
 
         public void CloseProgram()
