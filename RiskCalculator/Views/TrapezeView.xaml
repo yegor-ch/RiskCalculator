@@ -26,7 +26,7 @@
         
         <!--CHART SECTION-->
         <Grid Grid.Row="0">
-            <lvc:CartesianChart Series="{Binding MetricsSeriesCollection}" LegendLocation="Bottom">
+            <lvc:CartesianChart Series="{Binding MetricsSeriesCollection}" LegendLocation="Bottom" Margin="10 0">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis MinValue="0" MaxValue="10">
                         <lvc:Axis.Separator>

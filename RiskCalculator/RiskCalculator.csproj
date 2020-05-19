@@ -95,7 +95,11 @@
     <Compile Include="API\ApiProcessor.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Models\CveModel.cs" />
+    <Compile Include="Models\IntervalModel.cs" />
+    <Compile Include="Models\SeverityModel.cs" />
+    <Compile Include="Models\TrapezeModel.cs" />
     <Compile Include="Models\VulnerabilityModel.cs" />
+    <Compile Include="TrapezeCreator\TrapezeCreator.cs" />
     <Compile Include="ViewModels\AddCveViewModel.cs" />
     <Compile Include="ViewModels\CalculatorViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
