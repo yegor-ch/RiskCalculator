@@ -312,7 +312,10 @@
                         </Grid>
                     </Expander>
 
-                    <Button x:Name="ClearForm" Content="ОЧИСТИТИ" HorizontalAlignment="Center" Margin="0 10" Style="{StaticResource MaterialDesignFlatButton}"/>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"  Margin="0 10">
+                        <Button x:Name="SaveChanges" Content="ЗБЕРЕГТИ ЗМІНИ" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFlatButton}"/>
+                        <Button x:Name="ClearForm" Content="ОЧИСТИТИ" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignFlatButton}"/>
+                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </materialDesign:Card>

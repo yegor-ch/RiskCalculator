@@ -1685,6 +1685,15 @@ namespace RiskCalculator.ViewModels
             IsCleanFormClicked = false;
         }
 
+        public void SaveChanges()
+        {
+            // Изменения в оригинальном списке уязвимостей Vulnerabilities произовйдут автоматически.
+            SelectedVulnerability.MetricV3.BaseScore = BaseScore;
+            SelectedVulnerability.MetricV3.TemporalScore = TemporalScore;
+            SelectedVulnerability.MetricV3.EnvScore = EnvScore;
+            SelectedVulnerability.MetricV3.cvssV3.vectorString = CvssVectorString;
+        }
+
 
         public void CreateCharts()
         {

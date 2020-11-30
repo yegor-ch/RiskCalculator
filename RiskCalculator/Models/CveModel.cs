@@ -86,6 +86,13 @@ namespace RiskCalculator.Models
         public Cvssv3 cvssV3 { get; set; }
         public string exploitabilityScore { get; set; }
         public string impactScore { get; set; }
+
+        // Заполнятся в калькуляторе.
+
+        public double BaseScore { get; set; }
+        public double TemporalScore { get; set; }
+        public double EnvScore { get; set; }
+
     }
 
     public class Cvssv3
