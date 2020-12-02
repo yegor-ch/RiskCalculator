@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
 using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using RiskCalculator.Models;
 using System;
 using System.Collections.Generic;
@@ -28,11 +30,11 @@ namespace RiskCalculator.ViewModels
             }
         }
 
-        public RiskCalculationViewModel(BindableCollection<VulnerabilityModel> vulnerabilities, List<TrapezeModel> trapList, SeriesCollection metricsSeriesCollection)
+        public RiskCalculationViewModel(BindableCollection<VulnerabilityModel> vulnerabilities, List<TrapezeModel> trapList)
         {
             Vulnerabilities = vulnerabilities;
             TrapList = trapList;
-            MetricsSeriesCollection = metricsSeriesCollection;
+            MetricsSeriesCollection = new SeriesCollection();
             ResultVulnerabilities = new BindableCollection<VulnerabilityModel>();
         }
 
@@ -142,7 +144,48 @@ namespace RiskCalculator.ViewModels
                 ResultVulnerabilities.Add(v);
             }
 
+            DrawRiskDegree();
+        }
 
+        public void DrawRiskDegree()
+        {
+            MetricsSeriesCollection.Clear();
+
+            string[] severityTrap = SeverityModel.GetSevetity(TrapList.Count);
+
+            int j = 0;
+
+            foreach (var trap in TrapList)
+            {
+                TrapList[j].degreeRisk = severityTrap[j];
+                MetricsSeriesCollection.Add(new LineSeries()
+                {
+                    Values = new ChartValues<ObservablePoint>()
+                    {
+                        new ObservablePoint(trap.a * 10, 0),
+                        new ObservablePoint(trap.b11 * 10, 1),
+                        new ObservablePoint(trap.b21 * 10, 1),
+                        new ObservablePoint(trap.c * 10, 0),
+                    },
+                    LineSmoothness = 0,
+                    //TODO: Добавить проверку на выход из-за пределов массива.
+                    Title = severityTrap[j++]
+                });
+            }
+
+       
+            foreach (var v in Vulnerabilities)
+            {
+                MetricsSeriesCollection.Add(new LineSeries()
+                {
+                    Values = new ChartValues<ObservablePoint>()
+                    {
+                        new ObservablePoint(v.Lrv, 0),
+                        new ObservablePoint(v.Lrv, 1)
+                    },
+                    Title = v.Id
+                });
+            }
         }
 
         /// <summary>
