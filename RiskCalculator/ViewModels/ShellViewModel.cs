@@ -1,7 +1,9 @@
 ﻿using Caliburn.Micro;
+using LiveCharts;
 using RiskCalculator.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,8 +33,8 @@ namespace RiskCalculator.ViewModels
             
             MenuItems.Add(new MenuItem { Title = "Список вразливостей", Kind = "ViewList", ViewModel = new SelectedVulnerabilitiesViewModel(VulnerabilitiesList) });
             MenuItems.Add(new MenuItem { Title = "CVSS калькулятор", Kind = "Calculator", ViewModel = new CalculatorViewModel(VulnerabilitiesList) });
-            MenuItems.Add(new MenuItem { Title = "Метрики", Kind = "ChartBar", ViewModel = new TrapezeViewModel() });
-            MenuItems.Add(new MenuItem { Title = "Оцінювання ризиків", Kind = "Security" });
+            MenuItems.Add(new MenuItem { Title = "Метрики", Kind = "ChartBar", ViewModel = new TrapezeViewModel(ref TrapList, MetricsSeriesCollection) });
+            MenuItems.Add(new MenuItem { Title = "Оцінювання ризиків", Kind = "Security", ViewModel = new RiskCalculationViewModel(VulnerabilitiesList, TrapList, MetricsSeriesCollection) });
             MenuItems.Add(new MenuItem { Title = "Результати оцінки", Kind = "Newspaper" });
         }
 
@@ -41,6 +43,9 @@ namespace RiskCalculator.ViewModels
         public BindableCollection<MenuItem> _menuItems = new BindableCollection<MenuItem>();
 
         public BindableCollection<VulnerabilityModel> VulnerabilitiesList = new BindableCollection<VulnerabilityModel>();
+        public SeriesCollection MetricsSeriesCollection = new SeriesCollection();
+        public List<TrapezeModel> TrapList = new List<TrapezeModel>();
+
 
         public BindableCollection<MenuItem> MenuItems
         {

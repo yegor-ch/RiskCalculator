@@ -12,6 +12,7 @@ namespace RiskCalculator.Models
         {
             switch (count)
             {
+                case 2: return new string[] { "Низький", "Високий" };
                 case 3: return new string [] { "Низький", "Середній", "Високий" };
                 case 4: return new string[] { "Низький", "Середній", "Високий", "Критичний" };
                 case 5: return new string[] { "Низький", "Нижче середнього", "Середній", "Вижче середнього", "Високий" };

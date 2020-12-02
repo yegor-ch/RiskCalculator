@@ -1688,9 +1688,9 @@ namespace RiskCalculator.ViewModels
         public void SaveChanges()
         {
             // Изменения в оригинальном списке уязвимостей Vulnerabilities произовйдут автоматически.
-            SelectedVulnerability.MetricV3.BaseScore = BaseScore;
-            SelectedVulnerability.MetricV3.TemporalScore = TemporalScore;
-            SelectedVulnerability.MetricV3.EnvScore = EnvScore;
+            SelectedVulnerability.metrics.baseV.Score = BaseScore;
+            SelectedVulnerability.metrics.tempV.Score = TemporalScore;
+            SelectedVulnerability.metrics.envV.Score = EnvScore;
             SelectedVulnerability.MetricV3.cvssV3.vectorString = CvssVectorString;
         }
 

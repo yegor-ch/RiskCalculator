@@ -20,6 +20,7 @@ namespace RiskCalculator.ViewModels
         private string _intervalB;
         private bool _isUserInterval;
 
+        private List<TrapezeModel> testList;
 
         public List<TrapezeModel> TrapList { get; set; }
         public BindableCollection<IntervalModel> IntervalList 
@@ -55,9 +56,11 @@ namespace RiskCalculator.ViewModels
 
         //public bool IsUserInterval { get => _isUserInterval; set { _isUserInterval = value; NotifyOfPropertyChange(() => IsUserInterval); } }
 
-        public TrapezeViewModel()
-        {            
-            MetricsSeriesCollection = new SeriesCollection();
+        public TrapezeViewModel(ref List<TrapezeModel> trapList, SeriesCollection metricsSeriesCollection)
+        {
+            TrapList = trapList;
+            MetricsSeriesCollection = metricsSeriesCollection;
+            //MetricsSeriesCollection = new SeriesCollection();
 
             IntervalList = new BindableCollection<IntervalModel>
             {
@@ -68,7 +71,9 @@ namespace RiskCalculator.ViewModels
                 new IntervalModel { a = 80, b = 100 }
             };
 
-            BuildChart();
+            TrapList = BuildChart();
+            trapList = TrapList;
+            DrawChart();
 
         }
 
@@ -107,7 +112,7 @@ namespace RiskCalculator.ViewModels
             }
         }
 
-        public void BuildChart()
+        public List<TrapezeModel> BuildChart()
         {
             double[] interval = new double[IntervalList.Count * 2];
 
@@ -117,8 +122,7 @@ namespace RiskCalculator.ViewModels
                 interval[++i] = IntervalList[k].b;
             }
 
-            TrapList = TrapezeCreator.CreateTrapezeList(10.0, IntervalList.Count, interval);
-            DrawChart();
+            return TrapezeCreator.CreateTrapezeList(10.0, IntervalList.Count, interval);            
         }
 
         public void DrawChart()
@@ -131,6 +135,7 @@ namespace RiskCalculator.ViewModels
 
             foreach (var trap in TrapList)
             {
+                TrapList[j].degreeRisk = severityTrap[j];
                 MetricsSeriesCollection.Add(new LineSeries()
                 {
                     Values = new ChartValues<ObservablePoint>()
@@ -143,20 +148,24 @@ namespace RiskCalculator.ViewModels
                     LineSmoothness = 0,
                     //TODO: Добавить проверку на выход из-за пределов массива.
                     Title = severityTrap[j++]
-                });
+                });                
             }
         }
 
         public void Inctement()
         {
-            TrapList = TrapezeCreator.IncrementTrapezeList(TrapList, 10.0);
+            var temp = TrapezeCreator.IncrementTrapezeList(TrapList, 10.0);
+            TrapList.Clear();
+            TrapList.AddRange(temp);
             DrawChart();
         }
 
         public void Decrement()
         {
             //TODO: Добавить декрементирование для неравноменрых интервалов.
-            TrapList = TrapezeCreator.DecrementTrapezeList(TrapList, 10.0);
+            var temp = TrapezeCreator.DecrementTrapezeList(TrapList, 10.0);
+            TrapList.Clear();
+            TrapList.AddRange(temp);
             DrawChart();
         }
     }
