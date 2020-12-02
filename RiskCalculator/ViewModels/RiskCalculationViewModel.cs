@@ -183,7 +183,7 @@ namespace RiskCalculator.ViewModels
                         new ObservablePoint(v.Lrv, 0),
                         new ObservablePoint(v.Lrv, 1)
                     },
-                    Title = v.Id
+                    Title = v.Id,
                 });
             }
         }

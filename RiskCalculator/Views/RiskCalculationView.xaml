@@ -55,7 +55,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>-->
-                        <GridViewColumn DisplayMemberBinding="{Binding Сvss3}" Header="CVSS v3.1" Width="140" />
+                        <!--<GridViewColumn DisplayMemberBinding="{Binding Сvss3}" Header="CVSS v3.1" Width="140" />-->
                         <GridViewColumn Header="Степінь ризику вразивості" Width="500">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

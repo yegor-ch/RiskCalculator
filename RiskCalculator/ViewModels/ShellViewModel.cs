@@ -27,15 +27,15 @@ namespace RiskCalculator.ViewModels
             // Initialaze menu items.
 
             MenuItems.Add(new MenuItem { Title = "Додати СVE", Kind = "AddCircle", ViewModel = new AddCveViewModel(VulnerabilitiesList) });
-            MenuItems.Add(new MenuItem { Title = "Головна", Kind = "Home", ViewModel = new HomePageViewModel() });
+            //MenuItems.Add(new MenuItem { Title = "Головна", Kind = "Home", ViewModel = new HomePageViewModel() });
 
-            MenuItems.Add(new MenuItem { Title = "Сканування системи", Kind = "ShieldSearch" });
+            //MenuItems.Add(new MenuItem { Title = "Сканування системи", Kind = "ShieldSearch" });
             
             MenuItems.Add(new MenuItem { Title = "Список вразливостей", Kind = "ViewList", ViewModel = new SelectedVulnerabilitiesViewModel(VulnerabilitiesList) });
             MenuItems.Add(new MenuItem { Title = "CVSS калькулятор", Kind = "Calculator", ViewModel = new CalculatorViewModel(VulnerabilitiesList) });
             MenuItems.Add(new MenuItem { Title = "Метрики", Kind = "ChartBar", ViewModel = new TrapezeViewModel(ref TrapList, MetricsSeriesCollection) });
             MenuItems.Add(new MenuItem { Title = "Оцінювання ризиків", Kind = "Security", ViewModel = new RiskCalculationViewModel(VulnerabilitiesList, TrapList) });
-            MenuItems.Add(new MenuItem { Title = "Результати оцінки", Kind = "Newspaper" });
+            //MenuItems.Add(new MenuItem { Title = "Результати оцінки", Kind = "Newspaper" });
         }
 
         private MenuItem _selectedMenuItem;
